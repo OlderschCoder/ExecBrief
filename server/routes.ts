@@ -240,8 +240,8 @@ export async function registerRoutes(
     }
   });
 
-  // Impersonate user (admin only)
-  app.post("/api/auth/impersonate", async (req, res) => {
+  // Impersonate user (admin only) - protected by authentication middleware
+  app.post("/api/auth/impersonate", authenticateUser, requireAdmin, async (req, res) => {
     try {
       const { userId } = req.body;
       if (!userId) {
@@ -259,11 +259,26 @@ export async function registerRoutes(
     }
   });
 
-  // Clear impersonation
-  app.post("/api/auth/stop-impersonate", async (req, res) => {
+  // Clear impersonation - protected by admin auth
+  app.post("/api/auth/stop-impersonate", authenticateUser, requireAdmin, async (req, res) => {
     try {
       if ((req as any).session) {
         delete (req as any).session.impersonateUserId;
+      }
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Logout - clear current session (session-scoped, only affects caller's session)
+  app.post("/api/auth/logout", authenticateUser, async (req, res) => {
+    try {
+      if ((req as any).session) {
+        delete (req as any).session.impersonateUserId;
+        (req as any).session.destroy?.((err: any) => {
+          if (err) console.error('Session destroy error:', err);
+        });
       }
       res.json({ success: true });
     } catch (error: any) {

@@ -40,8 +40,12 @@ export default function Dashboard() {
     }
   };
 
-  const handleLogout = () => {
-    // Clear any session data and redirect
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch (e) {
+      console.error('Logout error:', e);
+    }
     window.location.href = '/login';
   };
 
