@@ -9,11 +9,11 @@ export function IntegrationsPanel() {
     <Card className="p-4 bg-muted/30 border-none">
       <div className="flex items-center gap-4 mb-6">
         <Avatar className="h-12 w-12 border-2 border-background shadow-sm">
-          <AvatarImage src={cioAvatar} alt="Dr. Reynolds" />
-          <AvatarFallback>DR</AvatarFallback>
+          <AvatarImage src={cioAvatar} alt="Mark Bojeun" />
+          <AvatarFallback>MB</AvatarFallback>
         </Avatar>
         <div className="flex-1">
-          <h3 className="font-serif font-semibold text-foreground">Dr. Reynolds</h3>
+          <h3 className="font-serif font-semibold text-foreground">Mark Bojeun</h3>
           <p className="text-xs text-muted-foreground">Chief Information Officer</p>
         </div>
         <button className="text-muted-foreground hover:text-foreground transition-colors p-2 rounded-full hover:bg-background">

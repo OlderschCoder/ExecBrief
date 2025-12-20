@@ -24,7 +24,7 @@ export function DailySummary() {
                 <span>Executive Summary</span>
               </div>
               <CardTitle className="text-3xl font-serif font-light leading-tight">
-                Good morning, Dr. Reynolds
+                Good morning, Mark
               </CardTitle>
             </div>
             <div className="flex gap-2">
