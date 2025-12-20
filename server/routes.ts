@@ -110,33 +110,44 @@ export async function registerRoutes(
   // Fetch briefing data (emails + calendar)
   app.get("/api/briefing", async (req, res) => {
     try {
-      const profile = await getUserProfile();
-      const email = profile.mail || profile.userPrincipalName;
-      const domain = email?.split('@')[1] || 'sccc.edu';
+      // Check for impersonation (admin viewing as another user)
+      const impersonateUserId = (req as any).session?.impersonateUserId;
       
-      let user = await storage.getUserByEmail(email);
+      let user;
+      if (impersonateUserId) {
+        user = await storage.getUser(impersonateUserId);
+      }
       
+      // If not impersonating, get user from Outlook profile
       if (!user) {
-        let org = await storage.getOrganizationByDomain(domain);
-        if (!org) {
-          org = await storage.createOrganization({
-            name: domain.split('.')[0].toUpperCase(),
-            domain: domain,
+        const profile = await getUserProfile();
+        const email = profile.mail || profile.userPrincipalName;
+        const domain = email?.split('@')[1] || 'sccc.edu';
+        
+        user = await storage.getUserByEmail(email);
+      
+        if (!user) {
+          let org = await storage.getOrganizationByDomain(domain);
+          if (!org) {
+            org = await storage.createOrganization({
+              name: domain.split('.')[0].toUpperCase(),
+              domain: domain,
+              isActive: true,
+            });
+          }
+          
+          const roles = await storage.getRoles();
+          const userRole = roles.find(r => r.name === 'user');
+          
+          user = await storage.createUser({
+            email: email,
+            name: profile.displayName,
+            title: profile.jobTitle,
+            organizationId: org.id,
+            roleId: userRole?.id,
             isActive: true,
           });
         }
-        
-        const roles = await storage.getRoles();
-        const userRole = roles.find(r => r.name === 'user');
-        
-        user = await storage.createUser({
-          email: email,
-          name: profile.displayName,
-          title: profile.jobTitle,
-          organizationId: org.id,
-          roleId: userRole?.id,
-          isActive: true,
-        });
       }
 
       // Fetch emails and events in parallel from all sources
@@ -225,6 +236,37 @@ export async function registerRoutes(
       res.json({ success: true });
     } catch (error: any) {
       console.error('Error marking item as read:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Impersonate user (admin only)
+  app.post("/api/auth/impersonate", async (req, res) => {
+    try {
+      const { userId } = req.body;
+      if (!userId) {
+        return res.status(400).json({ error: 'User ID required' });
+      }
+      
+      // Store impersonated user in session
+      if ((req as any).session) {
+        (req as any).session.impersonateUserId = userId;
+      }
+      
+      res.json({ success: true, userId });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Clear impersonation
+  app.post("/api/auth/stop-impersonate", async (req, res) => {
+    try {
+      if ((req as any).session) {
+        delete (req as any).session.impersonateUserId;
+      }
+      res.json({ success: true });
+    } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   });
