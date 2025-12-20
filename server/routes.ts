@@ -231,37 +231,33 @@ export async function registerRoutes(
 
   // Check integration status (which connectors are available)
   app.get("/api/integration-status", async (req, res) => {
+    let outlookConnected = false;
+    let gmailConnected = false;
+    let teamsConnected = false;
+
+    // Test Outlook connection - silently handle auth failures
     try {
-      let outlookConnected = false;
-      let gmailConnected = false;
-      let teamsConnected = false;
-
-      // Test Outlook connection
-      try {
-        await getUserProfile();
-        outlookConnected = true;
-      } catch (e) {
-        outlookConnected = false;
-      }
-
-      // Test Gmail connection
-      try {
-        gmailConnected = await isGmailConnected();
-      } catch (e) {
-        gmailConnected = false;
-      }
-
-      // Teams would require separate connector - currently not available
-      teamsConnected = false;
-
-      res.json({
-        outlook: outlookConnected,
-        gmail: gmailConnected,
-        teams: teamsConnected
-      });
-    } catch (error: any) {
-      res.status(500).json({ error: error.message });
+      await getUserProfile();
+      outlookConnected = true;
+    } catch {
+      // Quietly treat any error as "not connected"
     }
+
+    // Test Gmail connection - silently handle auth failures
+    try {
+      gmailConnected = await isGmailConnected();
+    } catch {
+      // Quietly treat any error as "not connected"
+    }
+
+    // Teams would require separate connector - currently not available
+    teamsConnected = false;
+
+    res.json({
+      outlook: outlookConnected,
+      gmail: gmailConnected,
+      teams: teamsConnected
+    });
   });
 
   // ==========================================

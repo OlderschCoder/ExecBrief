@@ -1209,7 +1209,7 @@ function AddEmailAccountDialog({
       return res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin', 'email-accounts'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'email-accounts', organizationId] });
       queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
       toast({ title: 'Email account added successfully' });
       onClose();
@@ -1238,7 +1238,7 @@ function AddEmailAccountDialog({
               </SelectTrigger>
               <SelectContent>
                 {users.map((user: any) => (
-                  <SelectItem key={user.id} value={user.id}>
+                  <SelectItem key={user.id} value={String(user.id)}>
                     {user.name} ({user.email})
                   </SelectItem>
                 ))}
