@@ -72,6 +72,84 @@ export async function registerRoutes(
 ): Promise<Server> {
   
   // ==========================================
+  // AUTH ROUTES
+  // ==========================================
+  
+  // Email/password login (fallback when Outlook unavailable)
+  app.post("/api/auth/login", async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      
+      if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password required' });
+      }
+      
+      const user = await storage.getUserByEmail(email.toLowerCase());
+      
+      if (!user) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+      
+      // Check password - requires ADMIN_PASSWORD env var to be set for login
+      const adminPassword = process.env.ADMIN_PASSWORD;
+      const isValidPassword = (adminPassword && password === adminPassword) || 
+        (user.passwordHash && password === user.passwordHash);
+      
+      if (!adminPassword && !user.passwordHash) {
+        return res.status(401).json({ error: 'Password login not configured. Please set ADMIN_PASSWORD or connect Outlook.' });
+      }
+      
+      if (!isValidPassword) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+      
+      // Get role name
+      let roleName = null;
+      if (user.roleId) {
+        const role = await storage.getRole(user.roleId);
+        roleName = role?.name || null;
+      }
+      
+      // Set session
+      if ((req as any).session) {
+        (req as any).session.userId = user.id;
+        (req as any).session.userEmail = user.email;
+      }
+      
+      // Update last login
+      await storage.updateUser(user.id, { lastLoginAt: new Date() });
+      
+      res.json({ 
+        success: true, 
+        user: { ...user, roleName }
+      });
+    } catch (error: any) {
+      console.error('Login error:', error);
+      res.status(500).json({ error: 'Login failed' });
+    }
+  });
+  
+  // Check session status
+  app.get("/api/auth/session", async (req, res) => {
+    try {
+      if ((req as any).session?.userId) {
+        const user = await storage.getUser((req as any).session.userId);
+        if (user) {
+          let roleName = null;
+          if (user.roleId) {
+            const role = await storage.getRole(user.roleId);
+            roleName = role?.name || null;
+          }
+          return res.json({ authenticated: true, user: { ...user, roleName } });
+        }
+      }
+      res.json({ authenticated: false });
+    } catch (error) {
+      res.json({ authenticated: false });
+    }
+  });
+  
+  // ==========================================
   // USER BRIEFING ROUTES
   // ==========================================
   

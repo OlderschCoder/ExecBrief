@@ -41,3 +41,8 @@ waitForPort = 5000
 [agent]
 mockupState = "FULLSTACK"
 integrations = ["javascript_database:1.0.0", "outlook:1.0.0", "google-mail:1.0.0", "zendesk:1.0.0"]
+
+[userenv]
+
+[userenv.shared]
+ADMIN_PASSWORD = "briefing2024"

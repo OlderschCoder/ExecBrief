@@ -46,6 +46,7 @@ export const users = pgTable("users", {
   title: text("title"),
   department: text("department"),
   phone: text("phone"),
+  passwordHash: text("password_hash"),
   organizationId: integer("organization_id").references(() => organizations.id),
   roleId: integer("role_id").references(() => roles.id),
   isActive: boolean("is_active").default(true).notNull(),
