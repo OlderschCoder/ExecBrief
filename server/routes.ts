@@ -75,12 +75,42 @@ export async function registerRoutes(
   // USER BRIEFING ROUTES
   // ==========================================
   
-  // Get current user from Outlook profile
+  // Get current user from Outlook profile or session
   app.get("/api/user/me", async (req, res) => {
     try {
-      const profile = await getUserProfile();
-      const email = profile.mail || profile.userPrincipalName;
-      const domain = email?.split('@')[1] || 'sccc.edu';
+      let email: string | undefined;
+      let profile: any = null;
+      
+      // Try Outlook first
+      try {
+        profile = await getUserProfile();
+        email = profile.mail || profile.userPrincipalName;
+        
+        // Save to session
+        if (email && (req as any).session) {
+          const existingUser = await storage.getUserByEmail(email);
+          if (existingUser) {
+            (req as any).session.userId = existingUser.id;
+            (req as any).session.userEmail = email;
+          }
+        }
+      } catch (outlookError) {
+        console.log('Outlook unavailable for /api/user/me, checking session...');
+        // Fallback to session
+        if ((req as any).session?.userId) {
+          const sessionUser = await storage.getUser((req as any).session.userId);
+          if (sessionUser) {
+            return res.json(sessionUser);
+          }
+        }
+        throw new Error('Outlook not connected and no active session. Please reconnect Outlook.');
+      }
+      
+      if (!email) {
+        throw new Error('Could not determine user email');
+      }
+      
+      const domain = email.split('@')[1] || 'sccc.edu';
       
       let user = await storage.getUserByEmail(email);
       
@@ -107,6 +137,12 @@ export async function registerRoutes(
           roleId: userRole?.id,
           isActive: true,
         });
+        
+        // Save new user to session
+        if ((req as any).session) {
+          (req as any).session.userId = user.id;
+          (req as any).session.userEmail = email;
+        }
       }
       
       res.json(user);
@@ -127,35 +163,61 @@ export async function registerRoutes(
         user = await storage.getUser(impersonateUserId);
       }
       
-      // If not impersonating, get user from Outlook profile
+      // If not impersonating, get user from Outlook profile or session
       if (!user) {
-        const profile = await getUserProfile();
-        const email = profile.mail || profile.userPrincipalName;
-        const domain = email?.split('@')[1] || 'sccc.edu';
+        let email: string | undefined;
         
-        user = await storage.getUserByEmail(email);
-      
-        if (!user) {
-          let org = await storage.getOrganizationByDomain(domain);
-          if (!org) {
-            org = await storage.createOrganization({
-              name: domain.split('.')[0].toUpperCase(),
-              domain: domain,
+        // Try Outlook first
+        try {
+          const profile = await getUserProfile();
+          email = profile.mail || profile.userPrincipalName;
+          
+          // Save to session
+          if (email && (req as any).session) {
+            const existingUser = await storage.getUserByEmail(email);
+            if (existingUser) {
+              (req as any).session.userId = existingUser.id;
+              (req as any).session.userEmail = email;
+            }
+          }
+        } catch (outlookError) {
+          // Fallback to session
+          if ((req as any).session?.userId) {
+            user = await storage.getUser((req as any).session.userId);
+          }
+        }
+        
+        if (!user && email) {
+          const domain = email.split('@')[1] || 'sccc.edu';
+          user = await storage.getUserByEmail(email);
+        
+          if (!user) {
+            let org = await storage.getOrganizationByDomain(domain);
+            if (!org) {
+              org = await storage.createOrganization({
+                name: domain.split('.')[0].toUpperCase(),
+                domain: domain,
+                isActive: true,
+              });
+            }
+            
+            const roles = await storage.getRoles();
+            const userRole = roles.find(r => r.name === 'user');
+            
+            const profile = await getUserProfile();
+            user = await storage.createUser({
+              email: email,
+              name: profile.displayName,
+              title: profile.jobTitle,
+              organizationId: org.id,
+              roleId: userRole?.id,
               isActive: true,
             });
           }
-          
-          const roles = await storage.getRoles();
-          const userRole = roles.find(r => r.name === 'user');
-          
-          user = await storage.createUser({
-            email: email,
-            name: profile.displayName,
-            title: profile.jobTitle,
-            organizationId: org.id,
-            roleId: userRole?.id,
-            isActive: true,
-          });
+        }
+        
+        if (!user) {
+          return res.status(401).json({ error: 'Not authenticated. Please connect Outlook.' });
         }
       }
 

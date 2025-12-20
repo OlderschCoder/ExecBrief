@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import { storage } from "../storage";
 import { getUserProfile } from "../integrations/outlook";
 
-// Extend Express Request to include user
+// Extend Express Request and Session
 declare global {
   namespace Express {
     interface Request {
@@ -18,13 +18,54 @@ declare global {
   }
 }
 
-// Middleware to authenticate and attach user from Outlook session
+declare module 'express-session' {
+  interface SessionData {
+    userId?: string;
+    userEmail?: string;
+    impersonateUserId?: string;
+  }
+}
+
+// Middleware to authenticate and attach user from Outlook or session
 export async function authenticateUser(req: Request, res: Response, next: NextFunction) {
   try {
-    const profile = await getUserProfile();
-    const email = profile.mail || profile.userPrincipalName;
+    let email: string | undefined;
     
-    const user = await storage.getUserByEmail(email);
+    // Try to get user from Outlook first
+    try {
+      const profile = await getUserProfile();
+      email = profile.mail || profile.userPrincipalName;
+      
+      // Save to session for future use
+      if (email && req.session) {
+        const user = await storage.getUserByEmail(email);
+        if (user) {
+          req.session.userId = user.id;
+          req.session.userEmail = email;
+        }
+      }
+    } catch (outlookError) {
+      // Outlook not available, try session fallback
+      console.log('Outlook unavailable, checking session...');
+      if (req.session?.userId) {
+        email = req.session.userEmail;
+      }
+    }
+    
+    if (!email) {
+      return res.status(401).json({ error: 'Not authenticated. Please connect Outlook to log in.' });
+    }
+    
+    // Check for impersonation (admin only)
+    let targetEmail = email;
+    if (req.session?.impersonateUserId) {
+      const impersonatedUser = await storage.getUser(req.session.impersonateUserId);
+      if (impersonatedUser) {
+        targetEmail = impersonatedUser.email;
+      }
+    }
+    
+    const user = await storage.getUserByEmail(targetEmail);
     
     if (!user) {
       return res.status(401).json({ error: 'User not found. Please log in.' });
@@ -49,7 +90,7 @@ export async function authenticateUser(req: Request, res: Response, next: NextFu
     next();
   } catch (error: any) {
     console.error('Authentication error:', error);
-    return res.status(401).json({ error: 'Authentication failed. Please reconnect your Outlook account.' });
+    return res.status(401).json({ error: 'Authentication failed. Please try again.' });
   }
 }
 
