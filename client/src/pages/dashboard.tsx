@@ -14,6 +14,7 @@ export default function Dashboard() {
             <div className="mb-8 pl-1">
               <h1 className="font-serif text-2xl font-bold tracking-tight text-primary">Briefing<span className="text-amber-600">.ai</span></h1>
               <p className="text-sm text-muted-foreground">Executive Intelligence Agent</p>
+              <a href="/admin" className="text-xs text-primary hover:underline mt-1 inline-block">Admin Panel →</a>
             </div>
             <IntegrationsPanel />
           </div>
