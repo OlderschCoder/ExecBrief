@@ -697,7 +697,8 @@ function IntegrationCard({
   color, 
   isConnected,
   onConfigure,
-  accountCount = 0
+  accountCount = 0,
+  organizationId
 }: { 
   provider: string; 
   name: string; 
@@ -707,20 +708,30 @@ function IntegrationCard({
   isConnected: boolean;
   onConfigure?: () => void;
   accountCount?: number;
+  organizationId?: number;
 }) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [isSyncing, setIsSyncing] = useState(false);
   
   const handleSync = async () => {
+    setIsSyncing(true);
     toast({ title: `Syncing ${name}...`, description: 'This may take a moment' });
     try {
-      const res = await fetch('/api/briefing');
+      const res = await fetch(`/api/admin/sync/${provider}`, { method: 'POST' });
       if (res.ok) {
-        queryClient.invalidateQueries({ queryKey: ['admin', 'email-accounts'] });
-        toast({ title: 'Sync complete', description: `${name} data refreshed` });
+        const data = await res.json();
+        queryClient.invalidateQueries({ queryKey: ['admin', 'email-accounts', organizationId] });
+        queryClient.invalidateQueries({ queryKey: ['integration-status'] });
+        toast({ title: 'Sync complete', description: data.message || `${name} data refreshed` });
+      } else {
+        const error = await res.json();
+        toast({ title: 'Sync issue', description: error.message, variant: 'destructive' });
       }
     } catch (error) {
       toast({ title: 'Sync failed', variant: 'destructive' });
+    } finally {
+      setIsSyncing(false);
     }
   };
 
