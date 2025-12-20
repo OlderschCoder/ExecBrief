@@ -1,0 +1,266 @@
+2025-12-20 14:21:52.95
+f5331e85
+System
+starting up user application
+2025-12-20 14:21:52.95
+f5331e85
+System
+forwarding local port 5000 to external port 80 (mapped as 1104)
+2025-12-20 14:21:53.36
+f5331e85
+User
+8:21:53 PM [express] serving on port 5000
+2025-12-20 14:22:42.07
+f5331e85
+System
+starting up user application
+2025-12-20 14:22:42.07
+f5331e85
+System
+forwarding local port 5000 to external port 80 (mapped as 1104)
+2025-12-20 14:22:42.07
+f5331e85
+System
+metasidecar: loaded enterprise status from environment is_enterprise=false
+2025-12-20 14:22:44.61
+f5331e85
+User
+8:22:44 PM [express] serving on port 5000
+2025-12-20 14:22:48.83
+f5331e85
+User
+8:22:48 PM [express] GET /api/briefing 200 in 3420ms :: {"user":{"id":"823b7d10-9cd9-4579-91e8-1efb42c5525c","email":"mark.bojeun@sccc.edu","name":"Mark Bojeun","title":"CIO","domain":"sccc.edu","createdAt":"2025-12-20T20:22:48.540Z"},"emails":[{"type":"email","priority":"medium","source":"outlook","title":"AI NPR Article AI Detection Tools are Unreliable","summary":"Maddie,\r\n\r\nI had reached out to some colleagues from DC on adopted education AI Policy Statements , an old friend sent me this article (Dec 16 2025) from NPR based off DC/MD/VA school system AI policies…Since Luke has not asked my opinions I am just sendi","sender":"Mark Bojeun","timestamp":"2025-12-20T19:53:00.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAACpBhboAAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Mark, please help us verify that you are a researcher","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"ResearchGate","timestamp":"2025-12-20T18:26:33.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMoQsAAA=\",\"from\":\"no-reply@researchgatemail.net\"}"},{"type":"email","priority":"medium","source":"outlook","title":null,"summary":"Build morning brief\r\n\r\nhttps://labs.google/\r\nSent from my Verizon, Samsung Galaxy smartphone","sender":"Mark Bojeun","timestamp":"2025-12-20T18:21:55.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMrUdAAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"AI detection tools are unreliable. Teachers are using them anyway : NPR","summary":"AI detection tools are unreliable. Teachers are using them anyway : NPR https://share.google/OATt4Vl06smVxkrnK\r\n\r\n\r\n\r\n\r\nSent from my Verizon, Samsung Galaxy smartphone","sender":"Mark Bojeun","timestamp":"2025-12-20T18:18:10.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMoQrAAA=\",\"from\":\"mark.bojeun@sccc.edu\"}"},{"type":"email","priority":"medium","source":"outlook","title":"AI detection tools are unreliable. Teachers are using them anyway : NPR","summary":"AI detection tools are unreliable. Teachers are using them anyway : NPR https://share.google/OATt4Vl06smVxkrnK\r\n\r\n\r\n\r\n\r\nSent from my Verizon, Samsung Galaxy smartphone","sender":"Mark Bojeun","timestamp":"2025-12-20T18:18:08.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMrUcAAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Mark, please confirm your account request","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"ResearchGate","timestamp":"2025-12-20T18:16:12.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMoQqAAA=\",\"from\":\"no-reply@researchgatemail.net\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Your Photo Strip from Billy's Ayr Lanes! 📸","summary":"This email is not from SCCC and has an attachment. If you are not expecting this attachment, please contact the sender before opening as it could be malicious. Thank you!\r\n- IT\r\n________________________________\r\n\r\n\r\nBILLY'S AYR LANES\r\n\r\nPHOTO-MATIC 2000","sender":"Billy's Photo Booth","timestamp":"2025-12-20T17:40:33.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAACqHAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMqtPAAA=\",\"from\":\"billys@classicpic.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":"A Gift for Modern Networking","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"dot.cards","timestamp":"2025-12-20T15:09:12.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEKAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMnCNAAA=\",\"from\":\"update@dotcards.net\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Twilio cannot approve the toll-free verification request of +18449641812 for use by Seward County Community College","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"trusthub-verify@twilio.com","timestamp":"2025-12-20T12:09:37.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFIKSBzAAA=\",\"from\":\"trusthub-verify@twilio.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Synchronization Report for Seward County Community College: Task Succeeded","summary":"This email is not from SCCC, contains a World Wide Web link and attachments. If you are not expecting this link please review the link and the email address to see if they are consistent before going to the web address or opening the attachment, as either","sender":"webex_comm@webex.com","timestamp":"2025-12-20T07:02:43.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEKAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMnCLAAA=\",\"from\":\"webex_comm@webex.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Recent Canvas Notifications","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"SCCC Canvas","timestamp":"2025-12-20T06:43:29.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_MWAAA=\",\"from\":\"notifications@instructure.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Email Security Digest for Friday, December 19, 2025","summary":"This email is not from SCCC, contains a World Wide Web link and attachments. If you are not expecting this link please review the link and the email address to see if they are consistent before going to the web address or opening the attachment, as either","sender":"Daily Digest","timestamp":"2025-12-20T06:08:04.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEKAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMnCMAAA=\",\"from\":\"no-reply@gosecure.net\"}"},{"type":"email","priority":"medium","source":"outlook","title":"","summary":"https://www.linkedin.com/posts/amoriabondgarethlloyd_you-cant-avoid-failure-but-you-can-choose-activity-7406965322794110976-mPW_?utm_source=share&utm_medium=member_android&rcm=ACoAAAC1XrABxaY__IXBlLAQK04JpB8n-t-ZEGY\r\n\r\n\r\n\r\n\r\nSent from my Galaxy","sender":"Mark Bojeun","timestamp":"2025-12-20T02:34:47.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_MUAAA=\",\"from\":\"mark.bojeun@sccc.edu\"}"},{"type":"email","priority":"medium","source":"outlook","title":null,"summary":"https://www.linkedin.com/posts/amoriabondgarethlloyd_you-cant-avoid-failure-but-you-can-choose-activity-7406965322794110976-mPW_?utm_source=share&utm_medium=member_android&rcm=ACoAAAC1XrABxaY__IXBlLAQK04JpB8n-t-ZEGY\r\n\r\n\r\n\r\n\r\nSent from my Galaxy","sender":"Mark Bojeun","timestamp":"2025-12-20T02:34:45.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAAFH29tBAAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Fw: Action Required: Microsoft Azure Deployment Acceptable Use Policy Violation [#SIR22438884]","summary":"________________________________\r\nFrom: Microsoft Azure Safeguards Team <azsafety@microsoft.com>\r\nSent: Friday, December 19, 2025 3:30 PM\r\nTo: Lucas Gonzalez Ramirez <lucas.gonzalezram81@sccc.edu>\r\nCc: Microsoft Azure Safeguards Team <azsafety@microsoft","sender":"Lucas Gonzalez Ramirez","timestamp":"2025-12-20T02:12:50.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_MTAAA=\",\"from\":\"lucas.gonzalezram81@sccc.edu\"}"},{"type":"email","priority":"medium","source":"outlook","title":"RE: SCCC IT Basic Assessment Dec 2025.xlsx","summary":"Wonderful!\r\n\r\nBut keep in mind all server migration to Azure is leveraging their automated backup, recovery, best practice authentication, and are all constantly monitored and reported on from analysis and altering. I'm sure we can improve but that w","sender":"Mark Bojeun","timestamp":"2025-12-20T01:40:23.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAAFH29tAAAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"RE: SCCC IT Basic Assessment Dec 2025.xlsx","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"Edwin Martinez (OculusIT)","timestamp":"2025-12-20T01:28:17.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_MSAAA=\",\"from\":\"edwin_martinez@oculusit.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":null,"summary":"No problem can be solved from the same level of consciousness that created it\r\n\r\nSent from my Verizon, Samsung Galaxy smartphone","sender":"Mark Bojeun","timestamp":"2025-12-20T01:22:41.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAAFH29s-AAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Re: Customer Number: 30826276","summary":"Cool. I kept trying to edit it today and it seemed flaky. Would close the app when I was trying to edit the department for example. I’ll update it in the new year.\r\nTracy M. Compaan\r\nHelp Desk Manager, Information Technology\r\nAA153 · https://sccc.edu/\r\n18","sender":"Tracy M. Compaan","timestamp":"2025-12-20T01:08:51.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_MRAAA=\",\"from\":\"tracy.compaan@sccc.edu\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Creating Your First World | VRChat Creation","summary":"Creating Your First World | VRChat Creation https://share.google/luNo8eIo55AscS2fr\r\n\r\n\r\n\r\n\r\nSent from my Verizon, Samsung Galaxy smartphone","sender":"Mark Bojeun","timestamp":"2025-12-20T01:01:17.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAAFH29s_AAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"}],"schedule":[{"type":"calendar","priority":"medium","source":"outlook","title":"Hair","summary":"No location","time":"2025-12-20T17:00:00.0000000","duration":"1h","timestamp":"2025-12-20T17:00:00.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAENAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_zdAAA=\",\"location\":\"\"}"}]}
+2025-12-20 14:33:35.94
+f5331e85
+System
+system: received signal terminated
+2025-12-20 14:33:35.94
+f5331e85
+System
+command finished with error [node ./dist/index.cjs]: signal: terminated
+2025-12-20 14:33:36.01
+f5331e85
+System
+main done, exiting
+2025-12-20 14:37:54.40
+f5331e85
+System
+system: received signal terminated
+2025-12-20 14:37:54.41
+f5331e85
+System
+command finished with error [node ./dist/index.cjs]: signal: terminated
+2025-12-20 14:37:54.42
+f5331e85
+System
+main done, exiting
+2025-12-20 14:42:23.57
+f5331e85
+System
+starting up user application
+2025-12-20 14:42:23.57
+f5331e85
+System
+metasidecar: loaded enterprise status from environment is_enterprise=false
+2025-12-20 14:42:23.57
+f5331e85
+System
+forwarding local port 5000 to external port 80 (mapped as 1104)
+2025-12-20 14:42:23.90
+f5331e85
+User
+8:42:23 PM [express] serving on port 5000
+2025-12-20 14:42:25.90
+f5331e85
+User
+8:42:25 PM [express] GET /api/briefing 200 in 1224ms :: {"user":{"id":"823b7d10-9cd9-4579-91e8-1efb42c5525c","email":"mark.bojeun@sccc.edu","name":"Mark Bojeun","title":"CIO","domain":"sccc.edu","createdAt":"2025-12-20T20:22:48.540Z"},"emails":[{"type":"email","priority":"medium","source":"outlook","title":"AWS Data Engineering & AI Automation for Higher Education","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"ABCloudz team","timestamp":"2025-12-20T20:29:39.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMoQtAAA=\",\"from\":\"customers@abcloudz.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":"AI NPR Article AI Detection Tools are Unreliable","summary":"Maddie,\r\n\r\nI had reached out to some colleagues from DC on adopted education AI Policy Statements , an old friend sent me this article (Dec 16 2025) from NPR based off DC/MD/VA school system AI policies…Since Luke has not asked my opinions I am just sendi","sender":"Mark Bojeun","timestamp":"2025-12-20T19:53:00.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAACpBhboAAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Mark, please help us verify that you are a researcher","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"ResearchGate","timestamp":"2025-12-20T18:26:33.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMoQsAAA=\",\"from\":\"no-reply@researchgatemail.net\"}"},{"type":"email","priority":"medium","source":"outlook","title":null,"summary":"Build morning brief\r\n\r\nhttps://labs.google/\r\nSent from my Verizon, Samsung Galaxy smartphone","sender":"Mark Bojeun","timestamp":"2025-12-20T18:21:55.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMrUdAAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"AI detection tools are unreliable. Teachers are using them anyway : NPR","summary":"AI detection tools are unreliable. Teachers are using them anyway : NPR https://share.google/OATt4Vl06smVxkrnK\r\n\r\n\r\n\r\n\r\nSent from my Verizon, Samsung Galaxy smartphone","sender":"Mark Bojeun","timestamp":"2025-12-20T18:18:10.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMoQrAAA=\",\"from\":\"mark.bojeun@sccc.edu\"}"},{"type":"email","priority":"medium","source":"outlook","title":"AI detection tools are unreliable. Teachers are using them anyway : NPR","summary":"AI detection tools are unreliable. Teachers are using them anyway : NPR https://share.google/OATt4Vl06smVxkrnK\r\n\r\n\r\n\r\n\r\nSent from my Verizon, Samsung Galaxy smartphone","sender":"Mark Bojeun","timestamp":"2025-12-20T18:18:08.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMrUcAAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Mark, please confirm your account request","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"ResearchGate","timestamp":"2025-12-20T18:16:12.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMoQqAAA=\",\"from\":\"no-reply@researchgatemail.net\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Your Photo Strip from Billy's Ayr Lanes! 📸","summary":"This email is not from SCCC and has an attachment. If you are not expecting this attachment, please contact the sender before opening as it could be malicious. Thank you!\r\n- IT\r\n________________________________\r\n\r\n\r\nBILLY'S AYR LANES\r\n\r\nPHOTO-MATIC 2000","sender":"Billy's Photo Booth","timestamp":"2025-12-20T17:40:33.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAACqHAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMqtPAAA=\",\"from\":\"billys@classicpic.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":"A Gift for Modern Networking","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"dot.cards","timestamp":"2025-12-20T15:09:12.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEKAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMnCNAAA=\",\"from\":\"update@dotcards.net\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Twilio cannot approve the toll-free verification request of +18449641812 for use by Seward County Community College","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"trusthub-verify@twilio.com","timestamp":"2025-12-20T12:09:37.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFIKSBzAAA=\",\"from\":\"trusthub-verify@twilio.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Synchronization Report for Seward County Community College: Task Succeeded","summary":"This email is not from SCCC, contains a World Wide Web link and attachments. If you are not expecting this link please review the link and the email address to see if they are consistent before going to the web address or opening the attachment, as either","sender":"webex_comm@webex.com","timestamp":"2025-12-20T07:02:43.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEKAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMnCLAAA=\",\"from\":\"webex_comm@webex.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Recent Canvas Notifications","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"SCCC Canvas","timestamp":"2025-12-20T06:43:29.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_MWAAA=\",\"from\":\"notifications@instructure.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Email Security Digest for Friday, December 19, 2025","summary":"This email is not from SCCC, contains a World Wide Web link and attachments. If you are not expecting this link please review the link and the email address to see if they are consistent before going to the web address or opening the attachment, as either","sender":"Daily Digest","timestamp":"2025-12-20T06:08:04.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEKAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMnCMAAA=\",\"from\":\"no-reply@gosecure.net\"}"},{"type":"email","priority":"medium","source":"outlook","title":"","summary":"https://www.linkedin.com/posts/amoriabondgarethlloyd_you-cant-avoid-failure-but-you-can-choose-activity-7406965322794110976-mPW_?utm_source=share&utm_medium=member_android&rcm=ACoAAAC1XrABxaY__IXBlLAQK04JpB8n-t-ZEGY\r\n\r\n\r\n\r\n\r\nSent from my Galaxy","sender":"Mark Bojeun","timestamp":"2025-12-20T02:34:47.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_MUAAA=\",\"from\":\"mark.bojeun@sccc.edu\"}"},{"type":"email","priority":"medium","source":"outlook","title":null,"summary":"https://www.linkedin.com/posts/amoriabondgarethlloyd_you-cant-avoid-failure-but-you-can-choose-activity-7406965322794110976-mPW_?utm_source=share&utm_medium=member_android&rcm=ACoAAAC1XrABxaY__IXBlLAQK04JpB8n-t-ZEGY\r\n\r\n\r\n\r\n\r\nSent from my Galaxy","sender":"Mark Bojeun","timestamp":"2025-12-20T02:34:45.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAAFH29tBAAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Fw: Action Required: Microsoft Azure Deployment Acceptable Use Policy Violation [#SIR22438884]","summary":"________________________________\r\nFrom: Microsoft Azure Safeguards Team <azsafety@microsoft.com>\r\nSent: Friday, December 19, 2025 3:30 PM\r\nTo: Lucas Gonzalez Ramirez <lucas.gonzalezram81@sccc.edu>\r\nCc: Microsoft Azure Safeguards Team <azsafety@microsoft","sender":"Lucas Gonzalez Ramirez","timestamp":"2025-12-20T02:12:50.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_MTAAA=\",\"from\":\"lucas.gonzalezram81@sccc.edu\"}"},{"type":"email","priority":"medium","source":"outlook","title":"RE: SCCC IT Basic Assessment Dec 2025.xlsx","summary":"Wonderful!\r\n\r\nBut keep in mind all server migration to Azure is leveraging their automated backup, recovery, best practice authentication, and are all constantly monitored and reported on from analysis and altering. I'm sure we can improve but that w","sender":"Mark Bojeun","timestamp":"2025-12-20T01:40:23.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAAFH29tAAAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"RE: SCCC IT Basic Assessment Dec 2025.xlsx","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"Edwin Martinez (OculusIT)","timestamp":"2025-12-20T01:28:17.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_MSAAA=\",\"from\":\"edwin_martinez@oculusit.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":null,"summary":"No problem can be solved from the same level of consciousness that created it\r\n\r\nSent from my Verizon, Samsung Galaxy smartphone","sender":"Mark Bojeun","timestamp":"2025-12-20T01:22:41.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAAFH29s-AAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Re: Customer Number: 30826276","summary":"Cool. I kept trying to edit it today and it seemed flaky. Would close the app when I was trying to edit the department for example. I’ll update it in the new year.\r\nTracy M. Compaan\r\nHelp Desk Manager, Information Technology\r\nAA153 · https://sccc.edu/\r\n18","sender":"Tracy M. Compaan","timestamp":"2025-12-20T01:08:51.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_MRAAA=\",\"from\":\"tracy.compaan@sccc.edu\"}"}],"schedule":[{"type":"calendar","priority":"medium","source":"outlook","title":"Hair","summary":"No location","time":"2025-12-20T17:00:00.0000000","duration":"1h","timestamp":"2025-12-20T17:00:00.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAENAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_zdAAA=\",\"location\":\"\"}"}]}
+2025-12-20 14:53:57.27
+f5331e85
+User
+8:53:57 PM [express] GET /api/briefing 200 in 662ms :: {"user":{"id":"823b7d10-9cd9-4579-91e8-1efb42c5525c","email":"mark.bojeun@sccc.edu","name":"Mark Bojeun","title":"CIO","domain":"sccc.edu","createdAt":"2025-12-20T20:22:48.540Z"},"emails":[{"type":"email","priority":"medium","source":"outlook","title":"AWS Data Engineering & AI Automation for Higher Education","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"ABCloudz team","timestamp":"2025-12-20T20:29:39.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMoQtAAA=\",\"from\":\"customers@abcloudz.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":"AI NPR Article AI Detection Tools are Unreliable","summary":"Maddie,\r\n\r\nI had reached out to some colleagues from DC on adopted education AI Policy Statements , an old friend sent me this article (Dec 16 2025) from NPR based off DC/MD/VA school system AI policies…Since Luke has not asked my opinions I am just sendi","sender":"Mark Bojeun","timestamp":"2025-12-20T19:53:00.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAACpBhboAAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Mark, please help us verify that you are a researcher","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"ResearchGate","timestamp":"2025-12-20T18:26:33.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMoQsAAA=\",\"from\":\"no-reply@researchgatemail.net\"}"},{"type":"email","priority":"medium","source":"outlook","title":null,"summary":"Build morning brief\r\n\r\nhttps://labs.google/\r\nSent from my Verizon, Samsung Galaxy smartphone","sender":"Mark Bojeun","timestamp":"2025-12-20T18:21:55.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMrUdAAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"AI detection tools are unreliable. Teachers are using them anyway : NPR","summary":"AI detection tools are unreliable. Teachers are using them anyway : NPR https://share.google/OATt4Vl06smVxkrnK\r\n\r\n\r\n\r\n\r\nSent from my Verizon, Samsung Galaxy smartphone","sender":"Mark Bojeun","timestamp":"2025-12-20T18:18:10.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMoQrAAA=\",\"from\":\"mark.bojeun@sccc.edu\"}"},{"type":"email","priority":"medium","source":"outlook","title":"AI detection tools are unreliable. Teachers are using them anyway : NPR","summary":"AI detection tools are unreliable. Teachers are using them anyway : NPR https://share.google/OATt4Vl06smVxkrnK\r\n\r\n\r\n\r\n\r\nSent from my Verizon, Samsung Galaxy smartphone","sender":"Mark Bojeun","timestamp":"2025-12-20T18:18:08.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMrUcAAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Mark, please confirm your account request","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"ResearchGate","timestamp":"2025-12-20T18:16:12.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMoQqAAA=\",\"from\":\"no-reply@researchgatemail.net\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Your Photo Strip from Billy's Ayr Lanes! 📸","summary":"This email is not from SCCC and has an attachment. If you are not expecting this attachment, please contact the sender before opening as it could be malicious. Thank you!\r\n- IT\r\n________________________________\r\n\r\n\r\nBILLY'S AYR LANES\r\n\r\nPHOTO-MATIC 2000","sender":"Billy's Photo Booth","timestamp":"2025-12-20T17:40:33.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAACqHAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMqtPAAA=\",\"from\":\"billys@classicpic.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":"A Gift for Modern Networking","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"dot.cards","timestamp":"2025-12-20T15:09:12.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEKAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMnCNAAA=\",\"from\":\"update@dotcards.net\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Twilio cannot approve the toll-free verification request of +18449641812 for use by Seward County Community College","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"trusthub-verify@twilio.com","timestamp":"2025-12-20T12:09:37.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFIKSBzAAA=\",\"from\":\"trusthub-verify@twilio.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Synchronization Report for Seward County Community College: Task Succeeded","summary":"This email is not from SCCC, contains a World Wide Web link and attachments. If you are not expecting this link please review the link and the email address to see if they are consistent before going to the web address or opening the attachment, as either","sender":"webex_comm@webex.com","timestamp":"2025-12-20T07:02:43.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEKAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMnCLAAA=\",\"from\":\"webex_comm@webex.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Recent Canvas Notifications","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"SCCC Canvas","timestamp":"2025-12-20T06:43:29.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_MWAAA=\",\"from\":\"notifications@instructure.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Email Security Digest for Friday, December 19, 2025","summary":"This email is not from SCCC, contains a World Wide Web link and attachments. If you are not expecting this link please review the link and the email address to see if they are consistent before going to the web address or opening the attachment, as either","sender":"Daily Digest","timestamp":"2025-12-20T06:08:04.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEKAAA6Nj2e5Wx6TYv51ZgO_hesAAFIMnCMAAA=\",\"from\":\"no-reply@gosecure.net\"}"},{"type":"email","priority":"medium","source":"outlook","title":"","summary":"https://www.linkedin.com/posts/amoriabondgarethlloyd_you-cant-avoid-failure-but-you-can-choose-activity-7406965322794110976-mPW_?utm_source=share&utm_medium=member_android&rcm=ACoAAAC1XrABxaY__IXBlLAQK04JpB8n-t-ZEGY\r\n\r\n\r\n\r\n\r\nSent from my Galaxy","sender":"Mark Bojeun","timestamp":"2025-12-20T02:34:47.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_MUAAA=\",\"from\":\"mark.bojeun@sccc.edu\"}"},{"type":"email","priority":"medium","source":"outlook","title":null,"summary":"https://www.linkedin.com/posts/amoriabondgarethlloyd_you-cant-avoid-failure-but-you-can-choose-activity-7406965322794110976-mPW_?utm_source=share&utm_medium=member_android&rcm=ACoAAAC1XrABxaY__IXBlLAQK04JpB8n-t-ZEGY\r\n\r\n\r\n\r\n\r\nSent from my Galaxy","sender":"Mark Bojeun","timestamp":"2025-12-20T02:34:45.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAAFH29tBAAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Fw: Action Required: Microsoft Azure Deployment Acceptable Use Policy Violation [#SIR22438884]","summary":"________________________________\r\nFrom: Microsoft Azure Safeguards Team <azsafety@microsoft.com>\r\nSent: Friday, December 19, 2025 3:30 PM\r\nTo: Lucas Gonzalez Ramirez <lucas.gonzalezram81@sccc.edu>\r\nCc: Microsoft Azure Safeguards Team <azsafety@microsoft","sender":"Lucas Gonzalez Ramirez","timestamp":"2025-12-20T02:12:50.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_MTAAA=\",\"from\":\"lucas.gonzalezram81@sccc.edu\"}"},{"type":"email","priority":"medium","source":"outlook","title":"RE: SCCC IT Basic Assessment Dec 2025.xlsx","summary":"Wonderful!\r\n\r\nBut keep in mind all server migration to Azure is leveraging their automated backup, recovery, best practice authentication, and are all constantly monitored and reported on from analysis and altering. I'm sure we can improve but that w","sender":"Mark Bojeun","timestamp":"2025-12-20T01:40:23.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAAFH29tAAAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"RE: SCCC IT Basic Assessment Dec 2025.xlsx","summary":"This email is not from SCCC and contains a World Wide Web link. If you are not expecting this link please review the link and the email address to see if they are consistent before opening it, as it could open a malicious web site. Thank you!\r\n- IT\r\n_____","sender":"Edwin Martinez (OculusIT)","timestamp":"2025-12-20T01:28:17.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_MSAAA=\",\"from\":\"edwin_martinez@oculusit.com\"}"},{"type":"email","priority":"medium","source":"outlook","title":null,"summary":"No problem can be solved from the same level of consciousness that created it\r\n\r\nSent from my Verizon, Samsung Galaxy smartphone","sender":"Mark Bojeun","timestamp":"2025-12-20T01:22:41.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEJAAA6Nj2e5Wx6TYv51ZgO_hesAAFH29s-AAA=\",\"from\":\"/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=C83CB45D9EC64ACD8223D7A56166E81E-B8070B45-32\"}"},{"type":"email","priority":"medium","source":"outlook","title":"Re: Customer Number: 30826276","summary":"Cool. I kept trying to edit it today and it seemed flaky. Would close the app when I was trying to edit the department for example. I’ll update it in the new year.\r\nTracy M. Compaan\r\nHelp Desk Manager, Information Technology\r\nAA153 · https://sccc.edu/\r\n18","sender":"Tracy M. Compaan","timestamp":"2025-12-20T01:08:51.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAEMAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_MRAAA=\",\"from\":\"tracy.compaan@sccc.edu\"}"}],"schedule":[{"type":"calendar","priority":"medium","source":"outlook","title":"Hair","summary":"No location","time":"2025-12-20T17:00:00.0000000","duration":"1h","timestamp":"2025-12-20T17:00:00.000Z","metadata":"{\"id\":\"AAMkAGJhNGNhNGNiLWU5YTItNDRlZS1hODk5LTM5YmI5MTc1NDgxYQBGAAAAAACxXOp2_M6KQ4UxgYmD1J-8BwA6Nj2e5Wx6TYv51ZgO_hesAAAAAAENAAA6Nj2e5Wx6TYv51ZgO_hesAAFH2_zdAAA=\",\"location\":\"\"}"}]}
+2025-12-20 15:43:57.17
+f5331e85
+System
+system: received signal terminated
+2025-12-20 15:43:57.17
+f5331e85
+System
+command finished with error [node ./dist/index.cjs]: signal: terminated
+2025-12-20 15:43:57.20
+f5331e85
+System
+main done, exiting
+2025-12-20 15:44:53.49
+f5331e85
+System
+starting up user application
+2025-12-20 15:44:53.49
+f5331e85
+System
+metasidecar: loaded enterprise status from environment is_enterprise=false
+2025-12-20 15:44:53.49
+f5331e85
+System
+forwarding local port 5000 to external port 80 (mapped as 1104)
+2025-12-20 15:44:56.20
+f5331e85
+User
+9:44:55 PM [express] serving on port 5000
+2025-12-20 16:00:04.42
+f5331e85
+System
+system: received signal terminated
+2025-12-20 16:00:04.43
+f5331e85
+System
+command finished with error [node ./dist/index.cjs]: signal: terminated
+2025-12-20 16:00:04.45
+f5331e85
+System
+main done, exiting
+2025-12-20 16:01:52.57
+f5331e85
+System
+starting up user application
+2025-12-20 16:01:52.57
+f5331e85
+System
+metasidecar: loaded enterprise status from environment is_enterprise=false
+2025-12-20 16:01:52.57
+f5331e85
+System
+forwarding local port 5000 to external port 80 (mapped as 1104)
+2025-12-20 16:01:53.64
+f5331e85
+User
+10:01:53 PM [express] serving on port 5000
+Wrap
+Colors
+Unexpected error happened 😕
+
+6fcc3e897a704f76a059f3d8a68bdf44
+
+
+We're already looking into it! Feel free to reach out to our support team, make sure to copy error ID
+
+Invalid response from Replit driver
+DROP SCHEMA public CASCADE;
+
+CREATE SCHEMA public;
+{
+  "sql": "DROP SCHEMA public CASCADE;\n\nCREATE SCHEMA public;"
+}
+[
+  "[Object]",
+  "[Object]"
+]
+Add graceful handling for Gmail email fetching failures
+I've cleaned up the dashboard:
+
+Changes made:
+
+✅ Removed the fake "Play Briefing" button (no audio implementation)
+✅ Removed the AI-generated profile photo - now shows your initials (MB)
+✅ Your real name, title, and email now display from your Outlook profile
+✅ Gmail and Teams now show as "Not connected" (honest status)
+✅ Removed the static "Live Insight" box
+✅ Greeting changes based on time of day
+Everything showing is now REAL data from your Outlook account.
+
+For configuring additional users/emails: This would require building an admin panel where you could:
+
+Add other executives who should receive briefings
+Connect their email accounts (Outlook/Gmail)
+Set priority rules per user
+Would you like me to add Gmail integration next, or build an admin panel for managing multiple users?
+
+Checkpoint made
+Update dashboard to display live data and remove placeholder elements
+Worked for 1 minute
+Ok, this will not work for 500 usesrs without administrative accvess. PLease design a comprehensive configuration tool set that enables gmail, teams, outlook, and where necessary mutliple outlook email accounts for contractors.....>Every configuration item needs to be available
+
+
+9 messages & 82 actions
+I understand - you need an enterprise-grade admin system for managing 500+ users across multiple email platforms. Let me design a comprehensive solution.
+I've added security controls to the admin panel. Click the "Admin Panel" link on the dashboard to test it - does it show your admin controls?
+
+Checkpoint made
+Fix React hooks error by restructuring component logic
+Worked for 14 minutes
+Want users to get these changes? Republish this App.
+Correct data Suffolk County Community College (sccc.edu) Seward County Community College
+PLeas then enable gmail and teamss
+
+
+2 messages & 20 actions
+I've updated the organization name to "Suffolk County Community College". Now let me set up Gmail for you. Unfortunately, Teams integration isn't available yet through the platform, but Gmail is ready to connect:
+I've updated the organization name to "Suffolk County Community College" and connected Gmail to your briefing. You should now see emails from both Outlook and Gmail. Unfortunately Teams isn't available as an integration yet. Does everything look correct?
+
+Checkpoint made
+Add Gmail integration to display emails in daily briefings
+Worked for 1 minute
+Failed to run database migration statement
+ALTER TABLE "briefing_items" ALTER COLUMN "metadata" SET DATA TYPE jsonb;
+column "metadata" cannot be cast automatically to type jsonb
+
+data has a single recod on user name, just recreate mark.bojeun@sccc.edu/mbojeun@gmail.com
+
+
+1 message & 10 actions
+Let me fix the database and recreate your user records:
+I've reset the database and recreated your user account (mark.bojeun@sccc.edu) with admin access for Suffolk County Community College. Does everything look good now?
+
+Show less
+Time worked
+1 minute
+Work done
+6 actions
+Agent Usage
+$0.76
+nope....same issue publishing?
+
+
+3 messages & 10 actions
+The Gmail connection doesn't have the right permissions to read emails - it's a limitation of the current connector scopes. Let me fix the code to gracefully handle this so your briefing still works with Outlook:
+Checkpoint made
+Add graceful handling for Gmail email fetching failures
+Worked for 49 seconds
+Want users to get these changes? Republish this App.
+so I asked you to recreate but it continues to attempt conveting asking to add or rename fiels...asdded every new on ubt failed.....please blow away production db, then create sfropm scratch
+
+
+1 message & 2 actions
+I understand the frustration. The issue is that I can only reset the **development** database - I don't have access to reset your **production** database directly. Here's what you need to do: 1. **Open the Database panel** in Replit (click on the Database icon in the left sidebar) 2. **Switch to Production** environment 3. **Delete/reset the production database** (there should be an option to reset or recreate it) Alternatively, you can run this SQL in the production database console: ```sql DROP SCHEMA public CASCADE; CREATE SCHEMA public; ``` After you reset the production database, the publish should work because it will create fresh tables matching the current schema. Would you like me to help you with anything else while you reset the production database?
+can not access prod other than read only....is that the isssue
+
+
+1 message & 3 actions
+Yes, that's likely the issue! You have read-only access to production through my tools. Here's how to fix it: 1. **Go to the Database pane** in Replit (left sidebar) 2. **Click "Production Database"** 3. **Go to the "Settings" tab** within the database tool 4. **Look for "Remove database"** or similar option - this will delete the production database Once you remove it, when you publish again, Replit will create a fresh production database with the correct schema automatically. Alternatively, from the Database pane: - Select "Production Database" - Click "My Data" - Toggle **"Edit"** mode to make changes directly Would you like to try removing and recreating the production database through those settings?
+DROP SCHEMA public CASCADE;
+
+CREATE SCHEMA public;
+{
+"sql": "DROP SCHEMA public CASCADE;\n\nCREATE SCHEMA public;"
+}
+[
+"[Object]",
+"[Object]"
+]
+
+Would it juit be easier to destroy the stie and creeate a new one?
+
+It looks like the DROP SCHEMA command succeeded! That should have cleared the production database. Now try publishing again - it should work since the production database is now empty and will accept the fresh schema.
+
+If publishing still fails, then yes - starting fresh with a new site would be simpler at this point. But try publishing first since you just cleared the production database.
+
+The publish suggestion was sent. Let me check the logs to see if there are any issues.
+
+Click Publish now - your production database is cleared and ready. The fresh schema should be created automatically when you publish.
+
+Worked for 17 seconds
+Want users to get these changes? Republish this App.
+
+Scroll to latest
+is the d
+Briefing AI Agent - Replit
+Could not connect to the reCAPTCHA service. Please check your internet connection and reload to get a reCAPTCHA challenge.
