@@ -29,10 +29,14 @@ async function getAccessToken() {
     }
   ).then(res => res.json()).then(data => data.items?.[0]);
 
-  const accessToken = connectionSettings?.settings?.access_token || connectionSettings.settings?.oauth?.credentials?.access_token;
+  if (!connectionSettings || !connectionSettings.settings) {
+    throw new Error('Outlook not connected. Please reconnect your Outlook account.');
+  }
 
-  if (!connectionSettings || !accessToken) {
-    throw new Error('Outlook not connected');
+  const accessToken = connectionSettings.settings?.access_token || connectionSettings.settings?.oauth?.credentials?.access_token;
+
+  if (!accessToken) {
+    throw new Error('Outlook token expired. Please reconnect your Outlook account.');
   }
   return accessToken;
 }
