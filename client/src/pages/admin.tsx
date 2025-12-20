@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -43,7 +43,88 @@ export default function AdminDashboard() {
     retry: false
   });
 
-  // Show access denied page if not authorized
+  // Fetch organizations - enabled only when access is granted
+  const hasAccess = !accessLoading && !accessError && accessData?.hasAccess;
+  
+  const { data: organizations } = useQuery({
+    queryKey: ['admin', 'organizations'],
+    queryFn: async () => {
+      const res = await fetch('/api/admin/organizations');
+      if (!res.ok) throw new Error('Failed to fetch organizations');
+      return res.json();
+    },
+    enabled: hasAccess
+  });
+
+  const currentOrg = organizations?.[0];
+
+  // Fetch stats
+  const { data: stats } = useQuery({
+    queryKey: ['admin', 'stats', currentOrg?.id],
+    queryFn: async () => {
+      if (!currentOrg) return null;
+      const res = await fetch(`/api/admin/stats/${currentOrg.id}`);
+      if (!res.ok) throw new Error('Failed to fetch stats');
+      return res.json();
+    },
+    enabled: hasAccess && !!currentOrg
+  });
+
+  // Fetch users
+  const { data: usersData, isLoading: usersLoading } = useQuery({
+    queryKey: ['admin', 'users', currentOrg?.id, searchQuery],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      if (currentOrg) params.set('organizationId', currentOrg.id.toString());
+      if (searchQuery) params.set('search', searchQuery);
+      const res = await fetch(`/api/admin/users?${params}`);
+      if (!res.ok) throw new Error('Failed to fetch users');
+      return res.json();
+    },
+    enabled: hasAccess && !!currentOrg
+  });
+
+  // Fetch roles
+  const { data: roles } = useQuery({
+    queryKey: ['admin', 'roles'],
+    queryFn: async () => {
+      const res = await fetch('/api/admin/roles');
+      if (!res.ok) throw new Error('Failed to fetch roles');
+      return res.json();
+    },
+    enabled: hasAccess
+  });
+
+  // Fetch policies
+  const { data: policies } = useQuery({
+    queryKey: ['admin', 'policies', currentOrg?.id],
+    queryFn: async () => {
+      if (!currentOrg) return [];
+      const res = await fetch(`/api/admin/policies/${currentOrg.id}`);
+      if (!res.ok) throw new Error('Failed to fetch policies');
+      return res.json();
+    },
+    enabled: hasAccess && !!currentOrg
+  });
+
+  // Update user mutation
+  const updateUserMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+      const res = await fetch(`/api/admin/users/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (!res.ok) throw new Error('Failed to update user');
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
+      toast({ title: 'User updated successfully' });
+    }
+  });
+
+  // Show access denied page if not authorized - after all hooks
   if (accessLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-muted/20">
@@ -76,83 +157,6 @@ export default function AdminDashboard() {
       </div>
     );
   }
-
-  // Fetch organizations
-  const { data: organizations } = useQuery({
-    queryKey: ['admin', 'organizations'],
-    queryFn: async () => {
-      const res = await fetch('/api/admin/organizations');
-      if (!res.ok) throw new Error('Failed to fetch organizations');
-      return res.json();
-    }
-  });
-
-  const currentOrg = organizations?.[0];
-
-  // Fetch stats
-  const { data: stats } = useQuery({
-    queryKey: ['admin', 'stats', currentOrg?.id],
-    queryFn: async () => {
-      if (!currentOrg) return null;
-      const res = await fetch(`/api/admin/stats/${currentOrg.id}`);
-      if (!res.ok) throw new Error('Failed to fetch stats');
-      return res.json();
-    },
-    enabled: !!currentOrg
-  });
-
-  // Fetch users
-  const { data: usersData, isLoading: usersLoading } = useQuery({
-    queryKey: ['admin', 'users', currentOrg?.id, searchQuery],
-    queryFn: async () => {
-      const params = new URLSearchParams();
-      if (currentOrg) params.set('organizationId', currentOrg.id.toString());
-      if (searchQuery) params.set('search', searchQuery);
-      const res = await fetch(`/api/admin/users?${params}`);
-      if (!res.ok) throw new Error('Failed to fetch users');
-      return res.json();
-    },
-    enabled: !!currentOrg
-  });
-
-  // Fetch roles
-  const { data: roles } = useQuery({
-    queryKey: ['admin', 'roles'],
-    queryFn: async () => {
-      const res = await fetch('/api/admin/roles');
-      if (!res.ok) throw new Error('Failed to fetch roles');
-      return res.json();
-    }
-  });
-
-  // Fetch policies
-  const { data: policies } = useQuery({
-    queryKey: ['admin', 'policies', currentOrg?.id],
-    queryFn: async () => {
-      if (!currentOrg) return [];
-      const res = await fetch(`/api/admin/policies/${currentOrg.id}`);
-      if (!res.ok) throw new Error('Failed to fetch policies');
-      return res.json();
-    },
-    enabled: !!currentOrg
-  });
-
-  // Update user mutation
-  const updateUserMutation = useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: any }) => {
-      const res = await fetch(`/api/admin/users/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      if (!res.ok) throw new Error('Failed to update user');
-      return res.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
-      toast({ title: 'User updated successfully' });
-    }
-  });
 
   return (
     <div className="min-h-screen bg-muted/20">
