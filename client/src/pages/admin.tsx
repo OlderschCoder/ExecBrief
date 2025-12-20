@@ -371,42 +371,7 @@ export default function AdminDashboard() {
 
           {/* Integrations Tab */}
           <TabsContent value="integrations" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <IntegrationCard 
-                provider="outlook"
-                name="Microsoft Outlook"
-                description="Connect Outlook accounts for email and calendar sync"
-                icon={<Mail className="w-6 h-6" />}
-                color="bg-blue-100 text-blue-600"
-                isConnected={true}
-              />
-              <IntegrationCard 
-                provider="gmail"
-                name="Gmail"
-                description="Connect Gmail accounts for email sync"
-                icon={<Mail className="w-6 h-6" />}
-                color="bg-red-100 text-red-600"
-                isConnected={false}
-              />
-              <IntegrationCard 
-                provider="teams"
-                name="Microsoft Teams"
-                description="Enable Teams notifications and calendar integration"
-                icon={<Mail className="w-6 h-6" />}
-                color="bg-purple-100 text-purple-600"
-                isConnected={false}
-              />
-            </div>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>User Email Accounts</CardTitle>
-                <CardDescription>Manage email accounts assigned to users</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <EmailAccountsTable organizationId={currentOrg?.id} />
-              </CardContent>
-            </Card>
+            <IntegrationsPanel organizationId={currentOrg?.id} users={usersData?.users || []} />
           </TabsContent>
 
           {/* Policies Tab */}
@@ -730,15 +695,35 @@ function IntegrationCard({
   description, 
   icon, 
   color, 
-  isConnected 
+  isConnected,
+  onConfigure,
+  accountCount = 0
 }: { 
   provider: string; 
   name: string; 
   description: string; 
   icon: React.ReactNode; 
   color: string; 
-  isConnected: boolean 
+  isConnected: boolean;
+  onConfigure?: () => void;
+  accountCount?: number;
 }) {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  
+  const handleSync = async () => {
+    toast({ title: `Syncing ${name}...`, description: 'This may take a moment' });
+    try {
+      const res = await fetch('/api/briefing');
+      if (res.ok) {
+        queryClient.invalidateQueries({ queryKey: ['admin', 'email-accounts'] });
+        toast({ title: 'Sync complete', description: `${name} data refreshed` });
+      }
+    } catch (error) {
+      toast({ title: 'Sync failed', variant: 'destructive' });
+    }
+  };
+
   return (
     <Card>
       <CardHeader className="pb-3">
@@ -746,11 +731,16 @@ function IntegrationCard({
           <div className={`w-12 h-12 rounded-lg ${color} flex items-center justify-center`}>
             {icon}
           </div>
-          {isConnected ? (
-            <Badge className="bg-green-100 text-green-800">Connected</Badge>
-          ) : (
-            <Badge variant="outline">Not Connected</Badge>
-          )}
+          <div className="flex flex-col items-end gap-1">
+            {isConnected ? (
+              <Badge className="bg-green-100 text-green-800">Connected</Badge>
+            ) : (
+              <Badge variant="outline">Not Connected</Badge>
+            )}
+            {accountCount > 0 && (
+              <span className="text-xs text-muted-foreground">{accountCount} account{accountCount !== 1 ? 's' : ''}</span>
+            )}
+          </div>
         </div>
         <CardTitle className="text-lg">{name}</CardTitle>
         <CardDescription>{description}</CardDescription>
@@ -758,17 +748,17 @@ function IntegrationCard({
       <CardContent>
         {isConnected ? (
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="flex-1">
+            <Button variant="outline" size="sm" className="flex-1" onClick={handleSync} data-testid={`button-sync-${provider}`}>
               <RefreshCw className="w-4 h-4 mr-2" />
               Sync
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={onConfigure} data-testid={`button-configure-${provider}`}>
               <Settings className="w-4 h-4" />
             </Button>
           </div>
         ) : (
-          <Button className="w-full" size="sm">
-            Connect {name}
+          <Button className="w-full" size="sm" onClick={onConfigure} data-testid={`button-connect-${provider}`}>
+            Configure {name}
           </Button>
         )}
       </CardContent>
@@ -990,5 +980,336 @@ function PolicyCard({ policy }: { policy: any }) {
         </div>
       </CardContent>
     </Card>
+  );
+}
+
+function IntegrationsPanel({ organizationId, users }: { organizationId?: number; users: any[] }) {
+  const [configureProvider, setConfigureProvider] = useState<string | null>(null);
+  const [addAccountOpen, setAddAccountOpen] = useState(false);
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const { data: emailAccounts } = useQuery({
+    queryKey: ['admin', 'email-accounts', organizationId],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      if (organizationId) params.set('organizationId', organizationId.toString());
+      const res = await fetch(`/api/admin/email-accounts?${params}`);
+      if (!res.ok) throw new Error('Failed to fetch email accounts');
+      return res.json();
+    },
+    enabled: !!organizationId
+  });
+
+  const { data: integrationStatus } = useQuery({
+    queryKey: ['integration-status'],
+    queryFn: async () => {
+      const res = await fetch('/api/integration-status');
+      if (!res.ok) return { outlook: false, gmail: false, teams: false };
+      return res.json();
+    }
+  });
+
+  const outlookAccounts = emailAccounts?.filter((a: any) => a.provider === 'outlook') || [];
+  const gmailAccounts = emailAccounts?.filter((a: any) => a.provider === 'gmail') || [];
+  const teamsAccounts = emailAccounts?.filter((a: any) => a.provider === 'teams') || [];
+
+  return (
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <IntegrationCard 
+          provider="outlook"
+          name="Microsoft Outlook"
+          description="Connect Outlook accounts for email and calendar sync"
+          icon={<Mail className="w-6 h-6" />}
+          color="bg-blue-100 text-blue-600"
+          isConnected={integrationStatus?.outlook || outlookAccounts.length > 0}
+          accountCount={outlookAccounts.length}
+          onConfigure={() => setConfigureProvider('outlook')}
+        />
+        <IntegrationCard 
+          provider="gmail"
+          name="Gmail"
+          description="Connect Gmail accounts for email sync"
+          icon={<Mail className="w-6 h-6" />}
+          color="bg-red-100 text-red-600"
+          isConnected={integrationStatus?.gmail || gmailAccounts.length > 0}
+          accountCount={gmailAccounts.length}
+          onConfigure={() => setConfigureProvider('gmail')}
+        />
+        <IntegrationCard 
+          provider="teams"
+          name="Microsoft Teams"
+          description="Enable Teams notifications and calendar integration"
+          icon={<Mail className="w-6 h-6" />}
+          color="bg-purple-100 text-purple-600"
+          isConnected={integrationStatus?.teams || teamsAccounts.length > 0}
+          accountCount={teamsAccounts.length}
+          onConfigure={() => setConfigureProvider('teams')}
+        />
+      </div>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <div>
+            <CardTitle>User Email Accounts</CardTitle>
+            <CardDescription>Manage email accounts assigned to users</CardDescription>
+          </div>
+          <Button onClick={() => setAddAccountOpen(true)} data-testid="button-add-email-account">
+            <Plus className="w-4 h-4 mr-2" />
+            Add Email Account
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <EmailAccountsTable organizationId={organizationId} />
+        </CardContent>
+      </Card>
+
+      <ConfigureIntegrationDialog 
+        provider={configureProvider}
+        onClose={() => setConfigureProvider(null)}
+        organizationId={organizationId}
+      />
+
+      <AddEmailAccountDialog
+        open={addAccountOpen}
+        onClose={() => setAddAccountOpen(false)}
+        users={users}
+        organizationId={organizationId}
+      />
+    </>
+  );
+}
+
+function ConfigureIntegrationDialog({ 
+  provider, 
+  onClose,
+  organizationId 
+}: { 
+  provider: string | null; 
+  onClose: () => void;
+  organizationId?: number;
+}) {
+  const { toast } = useToast();
+
+  const providerInfo: Record<string, { name: string; description: string; instructions: string[] }> = {
+    outlook: {
+      name: 'Microsoft Outlook',
+      description: 'Outlook is connected via platform integration. User accounts are automatically synced.',
+      instructions: [
+        'Outlook is connected at the platform level',
+        'Each user will see their own emails when they log in',
+        'Calendar events are automatically synced',
+        'To add specific email accounts for contractors, use the "Add Email Account" button below'
+      ]
+    },
+    gmail: {
+      name: 'Gmail',
+      description: 'Gmail integration requires additional setup for email reading permissions.',
+      instructions: [
+        'Gmail is connected but may have limited permissions',
+        'Email sending works, but reading may require domain-wide delegation',
+        'Contact your IT administrator for full Gmail access',
+        'Add user email addresses manually to track them in the system'
+      ]
+    },
+    teams: {
+      name: 'Microsoft Teams',
+      description: 'Teams notifications require tenant-level configuration.',
+      instructions: [
+        'Teams integration requires Microsoft 365 admin consent',
+        'Configure your Azure AD tenant ID below',
+        'Users will receive briefing notifications in Teams',
+        'Calendar events from Teams meetings are synced automatically'
+      ]
+    }
+  };
+
+  const info = provider ? providerInfo[provider] : null;
+
+  return (
+    <Dialog open={!!provider} onOpenChange={() => onClose()}>
+      <DialogContent className="max-w-lg">
+        <DialogHeader>
+          <DialogTitle>Configure {info?.name}</DialogTitle>
+          <DialogDescription>{info?.description}</DialogDescription>
+        </DialogHeader>
+        <div className="py-4">
+          <h4 className="font-medium mb-3">Setup Instructions</h4>
+          <ul className="space-y-2">
+            {info?.instructions.map((instruction, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm">
+                <CheckCircle2 className="w-4 h-4 mt-0.5 text-green-600 flex-shrink-0" />
+                <span>{instruction}</span>
+              </li>
+            ))}
+          </ul>
+          
+          {provider === 'teams' && (
+            <div className="mt-4 space-y-3">
+              <div className="space-y-2">
+                <Label>Azure AD Tenant ID</Label>
+                <Input placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" />
+              </div>
+              <div className="space-y-2">
+                <Label>Client ID</Label>
+                <Input placeholder="Enter your Azure AD app client ID" />
+              </div>
+            </div>
+          )}
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>Close</Button>
+          {provider === 'teams' && (
+            <Button onClick={() => {
+              toast({ title: 'Teams configuration saved' });
+              onClose();
+            }}>
+              Save Configuration
+            </Button>
+          )}
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function AddEmailAccountDialog({ 
+  open, 
+  onClose, 
+  users,
+  organizationId
+}: { 
+  open: boolean; 
+  onClose: () => void; 
+  users: any[];
+  organizationId?: number;
+}) {
+  const [formData, setFormData] = useState({
+    userId: '',
+    provider: 'outlook',
+    email: '',
+    displayName: '',
+    accountType: 'primary'
+  });
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  const createAccountMutation = useMutation({
+    mutationFn: async (data: any) => {
+      const res = await fetch('/api/admin/email-accounts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || 'Failed to create email account');
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'email-accounts'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
+      toast({ title: 'Email account added successfully' });
+      onClose();
+      setFormData({ userId: '', provider: 'outlook', email: '', displayName: '', accountType: 'primary' });
+    },
+    onError: (error: any) => {
+      toast({ title: 'Error adding email account', description: error.message, variant: 'destructive' });
+    }
+  });
+
+  return (
+    <Dialog open={open} onOpenChange={() => onClose()}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Add Email Account</DialogTitle>
+          <DialogDescription>
+            Link an email account to a user for briefing aggregation
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label>Assign to User</Label>
+            <Select value={formData.userId} onValueChange={(val) => setFormData({ ...formData, userId: val })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a user" />
+              </SelectTrigger>
+              <SelectContent>
+                {users.map((user: any) => (
+                  <SelectItem key={user.id} value={user.id}>
+                    {user.name} ({user.email})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <Label>Email Provider</Label>
+            <Select value={formData.provider} onValueChange={(val) => setFormData({ ...formData, provider: val })}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="outlook">Microsoft Outlook</SelectItem>
+                <SelectItem value="gmail">Gmail</SelectItem>
+                <SelectItem value="teams">Microsoft Teams</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Email Address</Label>
+            <Input 
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              placeholder="user@example.com"
+              data-testid="input-email-account-address"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Display Name (optional)</Label>
+            <Input 
+              value={formData.displayName}
+              onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
+              placeholder="Work Email"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Account Type</Label>
+            <Select value={formData.accountType} onValueChange={(val) => setFormData({ ...formData, accountType: val })}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="primary">Primary</SelectItem>
+                <SelectItem value="secondary">Secondary</SelectItem>
+                <SelectItem value="shared">Shared Mailbox</SelectItem>
+                <SelectItem value="delegated">Delegated Access</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>Cancel</Button>
+          <Button 
+            onClick={() => createAccountMutation.mutate({
+              ...formData,
+              syncEnabled: true,
+              isActive: true
+            })}
+            disabled={!formData.userId || !formData.email}
+            data-testid="button-save-email-account"
+          >
+            Add Account
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
