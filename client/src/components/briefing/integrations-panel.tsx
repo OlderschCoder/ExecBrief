@@ -2,10 +2,12 @@ import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Mail, Video, CheckCircle2, RotateCw, AlertCircle, Loader2 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function IntegrationsPanel() {
-  const { data, isLoading } = useQuery({
+  const queryClient = useQueryClient();
+  
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['briefing'],
     queryFn: async () => {
       const res = await fetch('/api/briefing');
@@ -14,8 +16,22 @@ export function IntegrationsPanel() {
     },
   });
 
+  const { data: integrationStatus } = useQuery({
+    queryKey: ['integration-status'],
+    queryFn: async () => {
+      const res = await fetch('/api/integration-status');
+      if (!res.ok) return { outlook: false, gmail: false, teams: false };
+      return res.json();
+    }
+  });
+
   const user = data?.user;
   const initials = user?.name?.split(' ').map((n: string) => n[0]).join('').toUpperCase() || 'MB';
+
+  const handleRefresh = () => {
+    refetch();
+    queryClient.invalidateQueries({ queryKey: ['integration-status'] });
+  };
 
   return (
     <Card className="p-4 bg-muted/30 border-none">
@@ -32,7 +48,11 @@ export function IntegrationsPanel() {
           <p className="text-xs text-muted-foreground">{user?.title || 'Chief Information Officer'}</p>
           <p className="text-[10px] text-muted-foreground">{user?.email}</p>
         </div>
-        <button className="text-muted-foreground hover:text-foreground transition-colors p-2 rounded-full hover:bg-background" data-testid="button-refresh">
+        <button 
+          className="text-muted-foreground hover:text-foreground transition-colors p-2 rounded-full hover:bg-background" 
+          data-testid="button-refresh"
+          onClick={handleRefresh}
+        >
           <RotateCw className="w-4 h-4" />
         </button>
       </div>
@@ -40,49 +60,67 @@ export function IntegrationsPanel() {
       <div className="space-y-4">
         <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Active Integrations</h4>
         
-        <div className="flex items-center justify-between p-3 rounded-lg bg-background border border-border/50 shadow-sm">
+        <div className={`flex items-center justify-between p-3 rounded-lg bg-background border border-border/50 shadow-sm ${!integrationStatus?.outlook ? 'opacity-60' : ''}`}>
           <div className="flex items-center gap-3">
             <div className="h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
               <Mail className="w-4 h-4" />
             </div>
             <div>
               <div className="text-sm font-medium">Outlook</div>
-              <div className="text-[10px] text-green-600 flex items-center gap-1">
-                <CheckCircle2 className="w-3 h-3" /> Connected
-              </div>
+              {integrationStatus?.outlook ? (
+                <div className="text-[10px] text-green-600 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3" /> Connected
+                </div>
+              ) : (
+                <div className="text-[10px] text-muted-foreground flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" /> Not connected
+                </div>
+              )}
             </div>
           </div>
-          <Switch checked={true} disabled />
+          <Switch checked={integrationStatus?.outlook || false} disabled />
         </div>
 
-        <div className="flex items-center justify-between p-3 rounded-lg bg-background border border-border/50 shadow-sm opacity-60">
+        <div className={`flex items-center justify-between p-3 rounded-lg bg-background border border-border/50 shadow-sm ${!integrationStatus?.gmail ? 'opacity-60' : ''}`}>
           <div className="flex items-center gap-3">
             <div className="h-8 w-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center">
               <Mail className="w-4 h-4" />
             </div>
             <div>
               <div className="text-sm font-medium">Gmail</div>
-              <div className="text-[10px] text-muted-foreground flex items-center gap-1">
-                <AlertCircle className="w-3 h-3" /> Not connected
-              </div>
+              {integrationStatus?.gmail ? (
+                <div className="text-[10px] text-green-600 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3" /> Connected
+                </div>
+              ) : (
+                <div className="text-[10px] text-muted-foreground flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" /> Not connected
+                </div>
+              )}
             </div>
           </div>
-          <Switch checked={false} disabled />
+          <Switch checked={integrationStatus?.gmail || false} disabled />
         </div>
 
-        <div className="flex items-center justify-between p-3 rounded-lg bg-background border border-border/50 shadow-sm opacity-60">
+        <div className={`flex items-center justify-between p-3 rounded-lg bg-background border border-border/50 shadow-sm ${!integrationStatus?.teams ? 'opacity-60' : ''}`}>
           <div className="flex items-center gap-3">
             <div className="h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
               <Video className="w-4 h-4" />
             </div>
             <div>
               <div className="text-sm font-medium">Teams</div>
-              <div className="text-[10px] text-muted-foreground flex items-center gap-1">
-                <AlertCircle className="w-3 h-3" /> Not connected
-              </div>
+              {integrationStatus?.teams ? (
+                <div className="text-[10px] text-green-600 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3" /> Connected
+                </div>
+              ) : (
+                <div className="text-[10px] text-muted-foreground flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" /> Not connected
+                </div>
+              )}
             </div>
           </div>
-          <Switch checked={false} disabled />
+          <Switch checked={integrationStatus?.teams || false} disabled />
         </div>
       </div>
     </Card>

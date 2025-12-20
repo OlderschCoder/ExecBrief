@@ -497,6 +497,37 @@ export async function registerRoutes(
     }
   });
 
+  // Sync integration data
+  app.post("/api/admin/sync/:provider", async (req, res) => {
+    try {
+      const provider = req.params.provider;
+      let message = '';
+      
+      if (provider === 'outlook') {
+        // Trigger outlook sync - just verify connection works
+        await getUserProfile();
+        message = 'Outlook connected and ready. Emails sync automatically on dashboard load.';
+      } else if (provider === 'gmail') {
+        // Check gmail connection
+        const connected = await isGmailConnected();
+        if (connected) {
+          message = 'Gmail connected. Note: Reading emails requires additional permissions.';
+        } else {
+          return res.status(400).json({ message: 'Gmail not connected or missing permissions' });
+        }
+      } else if (provider === 'teams') {
+        message = 'Teams integration requires additional configuration.';
+      }
+      
+      // Update lastSyncedAt for all email accounts of this provider
+      await storage.updateEmailAccountsSyncTime(provider);
+      
+      res.json({ success: true, message });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message || 'Sync failed' });
+    }
+  });
+
   // Integration Providers
   app.get("/api/admin/integrations/:organizationId", async (req, res) => {
     try {

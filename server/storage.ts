@@ -61,6 +61,7 @@ export interface IStorage {
   getAllEmailAccounts(organizationId?: number): Promise<EmailAccount[]>;
   createEmailAccount(account: InsertEmailAccount): Promise<EmailAccount>;
   updateEmailAccount(id: number, data: Partial<InsertEmailAccount>): Promise<EmailAccount | undefined>;
+  updateEmailAccountsSyncTime(provider: string): Promise<void>;
   deleteEmailAccount(id: number): Promise<void>;
 
   // Contractor Assignments
@@ -221,6 +222,12 @@ export class DatabaseStorage implements IStorage {
   async updateEmailAccount(id: number, data: Partial<InsertEmailAccount>): Promise<EmailAccount | undefined> {
     const [account] = await db.update(emailAccounts).set(data).where(eq(emailAccounts.id, id)).returning();
     return account || undefined;
+  }
+
+  async updateEmailAccountsSyncTime(provider: string): Promise<void> {
+    await db.update(emailAccounts)
+      .set({ lastSyncedAt: new Date(), syncStatus: 'synced' })
+      .where(eq(emailAccounts.provider, provider));
   }
 
   async deleteEmailAccount(id: number): Promise<void> {

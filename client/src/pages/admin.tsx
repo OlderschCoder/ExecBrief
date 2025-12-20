@@ -759,9 +759,9 @@ function IntegrationCard({
       <CardContent>
         {isConnected ? (
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="flex-1" onClick={handleSync} data-testid={`button-sync-${provider}`}>
-              <RefreshCw className="w-4 h-4 mr-2" />
-              Sync
+            <Button variant="outline" size="sm" className="flex-1" onClick={handleSync} disabled={isSyncing} data-testid={`button-sync-${provider}`}>
+              <RefreshCw className={`w-4 h-4 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
+              {isSyncing ? 'Syncing...' : 'Sync'}
             </Button>
             <Button variant="outline" size="sm" onClick={onConfigure} data-testid={`button-configure-${provider}`}>
               <Settings className="w-4 h-4" />
@@ -1037,6 +1037,7 @@ function IntegrationsPanel({ organizationId, users }: { organizationId?: number;
           isConnected={integrationStatus?.outlook || outlookAccounts.length > 0}
           accountCount={outlookAccounts.length}
           onConfigure={() => setConfigureProvider('outlook')}
+          organizationId={organizationId}
         />
         <IntegrationCard 
           provider="gmail"
@@ -1047,6 +1048,7 @@ function IntegrationsPanel({ organizationId, users }: { organizationId?: number;
           isConnected={integrationStatus?.gmail || gmailAccounts.length > 0}
           accountCount={gmailAccounts.length}
           onConfigure={() => setConfigureProvider('gmail')}
+          organizationId={organizationId}
         />
         <IntegrationCard 
           provider="teams"
@@ -1057,6 +1059,7 @@ function IntegrationsPanel({ organizationId, users }: { organizationId?: number;
           isConnected={integrationStatus?.teams || teamsAccounts.length > 0}
           accountCount={teamsAccounts.length}
           onConfigure={() => setConfigureProvider('teams')}
+          organizationId={organizationId}
         />
       </div>
 
