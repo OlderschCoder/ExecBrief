@@ -15,7 +15,7 @@ import {
   Users, Settings, Mail, Shield, Building2, Plus, Search, 
   MoreHorizontal, Edit, Trash2, CheckCircle2, XCircle, 
   Clock, AlertCircle, RefreshCw, Download, Upload, Link2,
-  Lock
+  Lock, Quote
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
@@ -107,6 +107,53 @@ export default function AdminDashboard() {
     enabled: hasAccess && !!currentOrg
   });
 
+  // Fetch quotes
+  const { data: quotes } = useQuery({
+    queryKey: ['admin', 'quotes', currentOrg?.id],
+    queryFn: async () => {
+      if (!currentOrg) return [];
+      const res = await fetch(`/api/admin/quotes/${currentOrg.id}`);
+      if (!res.ok) throw new Error('Failed to fetch quotes');
+      return res.json();
+    },
+    enabled: hasAccess && !!currentOrg
+  });
+
+  // Add/update quote state
+  const [newQuote, setNewQuote] = useState({ text: '', author: '', category: '' });
+  const [editingQuote, setEditingQuote] = useState<any>(null);
+
+  // Create quote mutation
+  const createQuoteMutation = useMutation({
+    mutationFn: async (data: { text: string; author: string; category: string }) => {
+      const res = await fetch('/api/admin/quotes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...data, organizationId: currentOrg?.id, isActive: true })
+      });
+      if (!res.ok) throw new Error('Failed to create quote');
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'quotes'] });
+      setNewQuote({ text: '', author: '', category: '' });
+      toast({ title: 'Quote added successfully' });
+    }
+  });
+
+  // Delete quote mutation
+  const deleteQuoteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const res = await fetch(`/api/admin/quotes/${id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Failed to delete quote');
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'quotes'] });
+      toast({ title: 'Quote deleted' });
+    }
+  });
+
   // Update user mutation
   const updateUserMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: any }) => {
@@ -182,7 +229,7 @@ export default function AdminDashboard() {
 
       <div className="max-w-7xl mx-auto p-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid grid-cols-5 w-full max-w-2xl">
+          <TabsList className="grid grid-cols-6 w-full max-w-3xl">
             <TabsTrigger value="overview" className="gap-2">
               <Building2 className="w-4 h-4" />
               Overview
@@ -198,6 +245,10 @@ export default function AdminDashboard() {
             <TabsTrigger value="policies" className="gap-2">
               <Shield className="w-4 h-4" />
               Policies
+            </TabsTrigger>
+            <TabsTrigger value="quotes" className="gap-2">
+              <Quote className="w-4 h-4" />
+              Quotes
             </TabsTrigger>
             <TabsTrigger value="settings" className="gap-2">
               <Settings className="w-4 h-4" />
@@ -397,6 +448,103 @@ export default function AdminDashboard() {
                 ))
               )}
             </div>
+          </TabsContent>
+
+          {/* Quotes Tab */}
+          <TabsContent value="quotes" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Inspirational Quotes</CardTitle>
+                <CardDescription>
+                  Manage quotes that appear in the daily briefing as "Quote of the Day"
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div className="space-y-2">
+                    <Label>Quote Text</Label>
+                    <Input
+                      placeholder="Enter an inspirational quote..."
+                      value={newQuote.text}
+                      onChange={(e) => setNewQuote({ ...newQuote, text: e.target.value })}
+                      data-testid="input-quote-text"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Author</Label>
+                    <Input
+                      placeholder="Quote author"
+                      value={newQuote.author}
+                      onChange={(e) => setNewQuote({ ...newQuote, author: e.target.value })}
+                      data-testid="input-quote-author"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Category (optional)</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="e.g., Leadership, Education"
+                        value={newQuote.category}
+                        onChange={(e) => setNewQuote({ ...newQuote, category: e.target.value })}
+                        data-testid="input-quote-category"
+                      />
+                      <Button 
+                        onClick={() => createQuoteMutation.mutate(newQuote)}
+                        disabled={!newQuote.text || createQuoteMutation.isPending}
+                        data-testid="button-add-quote"
+                      >
+                        <Plus className="w-4 h-4 mr-2" />
+                        Add
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border rounded-lg">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-1/2">Quote</TableHead>
+                        <TableHead>Author</TableHead>
+                        <TableHead>Category</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {quotes?.length === 0 && (
+                        <TableRow>
+                          <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
+                            No quotes yet. Add your first inspirational quote above.
+                          </TableCell>
+                        </TableRow>
+                      )}
+                      {quotes?.map((quote: any) => (
+                        <TableRow key={quote.id} data-testid={`row-quote-${quote.id}`}>
+                          <TableCell className="font-medium italic">"{quote.text}"</TableCell>
+                          <TableCell>{quote.author || '-'}</TableCell>
+                          <TableCell>
+                            {quote.category ? (
+                              <Badge variant="outline">{quote.category}</Badge>
+                            ) : '-'}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => deleteQuoteMutation.mutate(quote.id)}
+                              disabled={deleteQuoteMutation.isPending}
+                              data-testid={`button-delete-quote-${quote.id}`}
+                            >
+                              <Trash2 className="w-4 h-4 text-destructive" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Settings Tab */}

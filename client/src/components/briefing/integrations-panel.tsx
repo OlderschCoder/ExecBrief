@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Mail, Video, CheckCircle2, RotateCw, AlertCircle, Loader2 } from "lucide-react";
+import { Mail, Video, CheckCircle2, RotateCw, AlertCircle, Loader2, Ticket } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function IntegrationsPanel() {
@@ -121,6 +121,27 @@ export function IntegrationsPanel() {
             </div>
           </div>
           <Switch checked={integrationStatus?.teams || false} disabled />
+        </div>
+
+        <div className={`flex items-center justify-between p-3 rounded-lg bg-background border border-border/50 shadow-sm ${!integrationStatus?.zendesk ? 'opacity-60' : ''}`}>
+          <div className="flex items-center gap-3">
+            <div className="h-8 w-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+              <Ticket className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-sm font-medium">Zendesk</div>
+              {integrationStatus?.zendesk ? (
+                <div className="text-[10px] text-green-600 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3" /> Connected
+                </div>
+              ) : (
+                <div className="text-[10px] text-muted-foreground flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" /> Not connected
+                </div>
+              )}
+            </div>
+          </div>
+          <Switch checked={integrationStatus?.zendesk || false} disabled />
         </div>
       </div>
     </Card>

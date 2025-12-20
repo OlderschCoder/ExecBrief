@@ -3,12 +3,14 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { getRecentEmails, getTodayEvents, getUserProfile } from "./integrations/outlook";
 import { getRecentGmailEmails, isGmailConnected } from "./integrations/gmail";
+import { isZendeskConnected, getOpenTickets, getUrgentTickets } from "./integrations/zendesk";
 import { 
   insertUserSchema, 
   insertOrganizationSchema, 
   insertEmailAccountSchema,
   insertBriefingPolicySchema,
-  insertContractorAssignmentSchema
+  insertContractorAssignmentSchema,
+  insertQuoteSchema
 } from "@shared/schema";
 import { z } from "zod";
 import { authenticateUser, requireAdmin, requireAdminOrManager } from "./middleware/auth";
@@ -55,6 +57,13 @@ const updateIntegrationProviderSchema = z.object({
   displayName: z.string().optional(),
   isEnabled: z.boolean().optional(),
   settings: z.any().optional(),
+}).strict();
+
+const updateQuoteSchema = z.object({
+  text: z.string().optional(),
+  author: z.string().optional(),
+  category: z.string().optional(),
+  isActive: z.boolean().optional(),
 }).strict();
 
 export async function registerRoutes(
@@ -217,10 +226,40 @@ export async function registerRoutes(
         })
       }));
 
+      // Fetch Zendesk tickets as reminders
+      let zendeskTickets: any[] = [];
+      try {
+        const zendeskConnected = await isZendeskConnected();
+        if (zendeskConnected) {
+          const tickets = await getOpenTickets(10);
+          zendeskTickets = tickets.map((ticket: any) => ({
+            type: 'ticket' as const,
+            priority: ticket.priority === 'urgent' || ticket.priority === 'high' ? 'high' as const : 'medium' as const,
+            source: 'zendesk' as const,
+            title: ticket.subject,
+            summary: ticket.description?.substring(0, 150) || '',
+            status: ticket.status,
+            timestamp: new Date(ticket.updated_at || ticket.created_at),
+            metadata: JSON.stringify({
+              id: ticket.id,
+              status: ticket.status,
+              priority: ticket.priority
+            })
+          }));
+        }
+      } catch (zendeskError) {
+        console.log('Zendesk fetch skipped:', (zendeskError as Error).message);
+      }
+
+      // Get quote of the day
+      const quote = await storage.getRandomQuote(user?.organizationId || undefined);
+
       res.json({
         user,
         emails: emailBriefings,
-        schedule: eventBriefings
+        schedule: eventBriefings,
+        tickets: zendeskTickets,
+        quoteOfTheDay: quote
       });
     } catch (error: any) {
       console.error('Error fetching briefing:', error);
@@ -291,6 +330,7 @@ export async function registerRoutes(
     let outlookConnected = false;
     let gmailConnected = false;
     let teamsConnected = false;
+    let zendeskConnected = false;
 
     // Test Outlook connection - silently handle auth failures
     try {
@@ -307,14 +347,32 @@ export async function registerRoutes(
       // Quietly treat any error as "not connected"
     }
 
+    // Test Zendesk connection
+    try {
+      zendeskConnected = await isZendeskConnected();
+    } catch {
+      // Quietly treat any error as "not connected"
+    }
+
     // Teams would require separate connector - currently not available
     teamsConnected = false;
 
     res.json({
       outlook: outlookConnected,
       gmail: gmailConnected,
-      teams: teamsConnected
+      teams: teamsConnected,
+      zendesk: zendeskConnected
     });
+  });
+
+  // Get quote of the day (public endpoint)
+  app.get("/api/quote-of-the-day", async (req, res) => {
+    try {
+      const quote = await storage.getRandomQuote();
+      res.json(quote || null);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
   });
 
   // ==========================================
@@ -649,6 +707,46 @@ export async function registerRoutes(
   app.delete("/api/admin/policies/:id", async (req, res) => {
     try {
       await storage.deleteBriefingPolicy(parseInt(req.params.id));
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Quotes Management
+  app.get("/api/admin/quotes/:organizationId", async (req, res) => {
+    try {
+      const quotes = await storage.getQuotes(parseInt(req.params.organizationId));
+      res.json(quotes);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/admin/quotes", async (req, res) => {
+    try {
+      const data = insertQuoteSchema.parse(req.body);
+      const quote = await storage.createQuote(data);
+      res.json(quote);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
+  app.patch("/api/admin/quotes/:id", async (req, res) => {
+    try {
+      const validatedData = updateQuoteSchema.parse(req.body);
+      const quote = await storage.updateQuote(parseInt(req.params.id), validatedData);
+      if (!quote) return res.status(404).json({ error: 'Quote not found' });
+      res.json(quote);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
+  app.delete("/api/admin/quotes/:id", async (req, res) => {
+    try {
+      await storage.deleteQuote(parseInt(req.params.id));
       res.json({ success: true });
     } catch (error: any) {
       res.status(500).json({ error: error.message });

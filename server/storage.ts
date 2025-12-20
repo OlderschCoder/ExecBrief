@@ -10,6 +10,7 @@ import {
   contractorAssignments,
   auditLogs,
   systemSettings,
+  quotes,
   type User, 
   type InsertUser,
   type Organization,
@@ -31,6 +32,8 @@ import {
   type InsertAuditLog,
   type SystemSetting,
   type InsertSystemSetting,
+  type Quote,
+  type InsertQuote,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, desc, ilike, or, sql } from "drizzle-orm";
@@ -101,6 +104,14 @@ export interface IStorage {
   getSystemSettings(organizationId: number): Promise<SystemSetting[]>;
   getSystemSetting(organizationId: number, key: string): Promise<SystemSetting | undefined>;
   upsertSystemSetting(setting: InsertSystemSetting): Promise<SystemSetting>;
+
+  // Quotes
+  getQuotes(organizationId?: number): Promise<Quote[]>;
+  getQuote(id: number): Promise<Quote | undefined>;
+  getRandomQuote(organizationId?: number): Promise<Quote | undefined>;
+  createQuote(quote: InsertQuote): Promise<Quote>;
+  updateQuote(id: number, data: Partial<InsertQuote>): Promise<Quote | undefined>;
+  deleteQuote(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -370,6 +381,44 @@ export class DatabaseStorage implements IStorage {
     }
     const [result] = await db.insert(systemSettings).values(setting).returning();
     return result;
+  }
+
+  // Quotes
+  async getQuotes(organizationId?: number): Promise<Quote[]> {
+    if (organizationId) {
+      return await db.select().from(quotes)
+        .where(and(eq(quotes.organizationId, organizationId), eq(quotes.isActive, true)))
+        .orderBy(desc(quotes.createdAt));
+    }
+    return await db.select().from(quotes)
+      .where(eq(quotes.isActive, true))
+      .orderBy(desc(quotes.createdAt));
+  }
+
+  async getQuote(id: number): Promise<Quote | undefined> {
+    const [quote] = await db.select().from(quotes).where(eq(quotes.id, id));
+    return quote || undefined;
+  }
+
+  async getRandomQuote(organizationId?: number): Promise<Quote | undefined> {
+    const allQuotes = await this.getQuotes(organizationId);
+    if (allQuotes.length === 0) return undefined;
+    const randomIndex = Math.floor(Math.random() * allQuotes.length);
+    return allQuotes[randomIndex];
+  }
+
+  async createQuote(quote: InsertQuote): Promise<Quote> {
+    const [result] = await db.insert(quotes).values(quote).returning();
+    return result;
+  }
+
+  async updateQuote(id: number, data: Partial<InsertQuote>): Promise<Quote | undefined> {
+    const [quote] = await db.update(quotes).set(data).where(eq(quotes.id, id)).returning();
+    return quote || undefined;
+  }
+
+  async deleteQuote(id: number): Promise<void> {
+    await db.update(quotes).set({ isActive: false }).where(eq(quotes.id, id));
   }
 }
 
