@@ -140,12 +140,20 @@ export async function registerRoutes(
       }
 
       // Fetch emails and events in parallel from all sources
-      const gmailConnected = await isGmailConnected();
+      // Gmail may fail due to permission scope limitations - handle gracefully
+      let gmailEmails: any[] = [];
+      try {
+        const gmailConnected = await isGmailConnected();
+        if (gmailConnected) {
+          gmailEmails = await getRecentGmailEmails(20);
+        }
+      } catch (gmailError) {
+        console.log('Gmail fetch skipped (permissions or not connected):', (gmailError as Error).message);
+      }
       
-      const [outlookEmails, events, gmailEmails] = await Promise.all([
+      const [outlookEmails, events] = await Promise.all([
         getRecentEmails(20),
-        getTodayEvents(),
-        gmailConnected ? getRecentGmailEmails(20) : Promise.resolve([])
+        getTodayEvents()
       ]);
 
       // Transform Outlook emails into briefing items
