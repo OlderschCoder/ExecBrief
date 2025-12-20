@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { getRecentEmails, getTodayEvents, getUserProfile } from "./integrations/outlook";
+import { getRecentGmailEmails, isGmailConnected } from "./integrations/gmail";
 import { 
   insertUserSchema, 
   insertOrganizationSchema, 
@@ -138,14 +139,17 @@ export async function registerRoutes(
         });
       }
 
-      // Fetch emails and events in parallel
-      const [emails, events] = await Promise.all([
+      // Fetch emails and events in parallel from all sources
+      const gmailConnected = await isGmailConnected();
+      
+      const [outlookEmails, events, gmailEmails] = await Promise.all([
         getRecentEmails(20),
-        getTodayEvents()
+        getTodayEvents(),
+        gmailConnected ? getRecentGmailEmails(20) : Promise.resolve([])
       ]);
 
-      // Transform emails into briefing items
-      const emailBriefings = emails.map(email => ({
+      // Transform Outlook emails into briefing items
+      const outlookBriefings = outlookEmails.map(email => ({
         type: 'email' as const,
         priority: email.importance === 'high' ? 'high' as const : 'medium' as const,
         source: 'outlook' as const,
@@ -158,6 +162,25 @@ export async function registerRoutes(
           from: email.from.emailAddress.address
         })
       }));
+
+      // Transform Gmail emails into briefing items
+      const gmailBriefings = gmailEmails.map((email: any) => ({
+        type: 'email' as const,
+        priority: 'medium' as const,
+        source: 'gmail' as const,
+        title: email.subject || '(No subject)',
+        summary: email.snippet || '',
+        sender: email.from?.split('<')[0]?.trim() || email.from,
+        timestamp: new Date(email.date),
+        metadata: JSON.stringify({
+          id: email.id,
+          from: email.from
+        })
+      }));
+
+      // Combine all emails and sort by timestamp
+      const emailBriefings = [...outlookBriefings, ...gmailBriefings]
+        .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
 
       // Transform events into briefing items
       const eventBriefings = events.map(event => ({
