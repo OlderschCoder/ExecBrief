@@ -16,19 +16,6 @@ export default function Dashboard() {
               <p className="text-sm text-muted-foreground">Executive Intelligence Agent</p>
             </div>
             <IntegrationsPanel />
-            
-            <div className="mt-8 p-4 rounded-xl bg-amber-50 border border-amber-100 text-amber-900 text-sm">
-              <h4 className="font-semibold mb-2 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-                Live Insight
-              </h4>
-              <p className="leading-relaxed opacity-90">
-                You have 3 conflicting meetings next Tuesday regarding the "Campus WiFi Upgrade". I can suggest a consolidation strategy.
-              </p>
-              <button className="mt-3 text-xs font-bold uppercase tracking-wide hover:underline">
-                Review Suggestion
-              </button>
-            </div>
           </div>
         </div>
 
@@ -36,7 +23,7 @@ export default function Dashboard() {
         <div className="col-span-12 lg:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-6">
           
           {/* Top Hero - Daily Summary */}
-          <div className="col-span-1 md:col-span-2 h-[300px]">
+          <div className="col-span-1 md:col-span-2 h-[280px]">
             <DailySummary />
           </div>
 

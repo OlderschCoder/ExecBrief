@@ -1,13 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, ArrowRight, Play, Pause } from "lucide-react";
+import { Sparkles, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 export function DailySummary() {
-  const [isPlaying, setIsPlaying] = useState(false);
-
   const { data } = useQuery({
     queryKey: ['briefing'],
     queryFn: async () => {
@@ -23,8 +20,10 @@ export function DailySummary() {
   const highPriorityCount = data?.emails?.filter((e: any) => e.priority === 'high')?.length || 0;
   const eventCount = data?.schedule?.length || 0;
 
-  const firstName = user?.name?.split(' ')[0] || 'Mark';
+  const firstName = user?.name?.split(' ')[0] || 'there';
   const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 
   return (
     <motion.div
@@ -43,22 +42,12 @@ export function DailySummary() {
                 <span>Executive Summary</span>
               </div>
               <CardTitle className="text-3xl font-serif font-light leading-tight">
-                Good morning, {firstName}
+                {greeting}, {firstName}
               </CardTitle>
             </div>
-            <div className="flex gap-2">
-                <button 
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 backdrop-blur-md transition-all text-xs font-medium uppercase tracking-wider"
-                  data-testid="button-play-briefing"
-                >
-                  {isPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
-                  {isPlaying ? "Pause Briefing" : "Play Briefing"}
-                </button>
-                <Badge variant="outline" className="border-primary-foreground/20 text-primary-foreground backdrop-blur-md">
-                  {today}
-                </Badge>
-            </div>
+            <Badge variant="outline" className="border-primary-foreground/20 text-primary-foreground backdrop-blur-md">
+              {today}
+            </Badge>
           </div>
         </CardHeader>
 
