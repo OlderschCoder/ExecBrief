@@ -4,663 +4,308 @@
 **Domain:** sccc.edu  
 **Primary Stakeholder:** Mark Bojeun, CIO (mark.bojeun@sccc.edu)  
 **Target Users:** 500+ users including executives, managers, staff, and contractors  
-**Document Version:** 2.0  
+**Document Version:** 3.0  
 **Date:** December 21, 2025
 
 ---
 
 ## 1. Executive Summary
 
-The Executive Morning Briefing AI is an intelligent daily briefing system designed for higher education leadership. It aggregates emails, calendar events, support tickets, and tasks from multiple sources, then presents them in a prioritized, AI-curated dashboard. The system supports multi-tenant architecture, role-based access control, and configurable briefing policies.
+The Executive Morning Briefing AI delivers a concise, prioritized daily summary for higher education leadership. Each morning, executives see their most important emails, today's calendar, pending tasks, and urgent items - all in one view.
 
 ---
 
-## 2. Core Requirements
+## 2. Core Morning Briefing Features (MVP)
 
-### 2.1 User Types & Roles
+These features are essential for the morning executive summary:
 
-| Role | Description | Permissions |
-|------|-------------|-------------|
-| **Admin** | Full system access (CIO, IT Directors) | All permissions, user impersonation, system configuration |
-| **Manager** | Department heads | Manage department users, view team briefings, configure policies |
-| **User** | Standard staff | View own briefing, manage own integrations |
-| **Contractor** | External support staff | View assigned user briefings only, no configuration access |
+### 2.1 Dashboard - The Morning View
 
-### 2.2 Key Features
+| Section | Content | Source |
+|---------|---------|--------|
+| **Priority Emails** | Top 10 important emails with AI summary | Outlook, Gmail |
+| **Today's Calendar** | Today's meetings and events | Outlook Calendar |
+| **Urgent Items** | Items requiring immediate attention | All sources |
+| **Quote of the Day** | Inspirational quote | Admin-configured |
 
-1. **Unified Dashboard**
-   - Morning briefing with prioritized items
-   - Quote of the Day (admin-configurable)
-   - Today's calendar at a glance
-   - Urgent items highlighted
+### 2.2 Essential Integrations
 
-2. **Email Integration**
-   - Microsoft Outlook (primary)
-   - Gmail (secondary)
-   - Support for multiple email accounts per user
-   - AI-powered email summarization
+| Integration | Purpose | Priority |
+|-------------|---------|----------|
+| **Microsoft Outlook** | Email + Calendar | Required |
+| **Gmail** | Secondary email source | Required |
+| **Microsoft To-Do** | Task list | Required |
+| **Zendesk** | Support ticket counts | Required |
 
-3. **Calendar Integration**
-   - Microsoft Outlook Calendar
-   - Google Calendar
-   - Today's events with meeting details
+### 2.3 User Roles
 
-4. **Task Management**
-   - Microsoft To-Do integration
-   - Task prioritization in briefings
+| Role | Morning Briefing Access |
+|------|------------------------|
+| **Admin** | Full access + configure for others |
+| **Manager** | Own briefing + team overview |
+| **User** | Own briefing only |
+| **Contractor** | Assigned user briefings only |
 
-5. **Support Ticket Integration**
-   - Zendesk ticket counts and urgent tickets
-   - Open ticket alerts
+### 2.4 Core Admin Functions
 
-6. **Collaboration**
-   - Microsoft Teams meeting integration
-   - Teams notification support
-
-7. **Admin Configuration**
-   - User management (CRUD, bulk import)
-   - Role assignment
-   - Organization settings
-   - Briefing policy configuration
-   - Quote management
-   - Integration management
-   - User impersonation for support
+- User management (add, edit, deactivate)
+- Role assignment
+- Quote management
+- Integration configuration
+- Briefing policy settings
 
 ---
 
-## 3. System Architecture
+## 3. Technical Architecture (Core)
 
-### 3.1 Technology Stack
-
-```
-Frontend:
-- React 18 with TypeScript
-- Wouter (routing)
-- TanStack Query (server state)
-- Tailwind CSS v4
-- Shadcn/ui components
-- Framer Motion (animations)
-
-Backend:
-- Node.js with Express
-- TypeScript (ESM modules)
-- PostgreSQL with Drizzle ORM
-
-Authentication:
-- Microsoft OAuth via Replit Connectors
-- Session-based auth with password fallback
-- Role-based access control (RBAC)
-
-Deployment:
-- Replit Autoscale deployment
-- PostgreSQL (Neon-backed)
-```
-
-### 3.2 Data Model
+### 3.1 Stack
 
 ```
-Organizations
-├── id (primary key)
-├── name
-├── domain (unique, e.g., "sccc.edu")
-├── settings (JSONB)
-└── is_active
-
-Users
-├── id (UUID)
-├── email (unique)
-├── name
-├── title
-├── department
-├── organization_id (FK)
-├── role_id (FK)
-├── preferences (JSONB)
-└── is_active
-
-Roles
-├── id
-├── name (unique: admin, manager, user, contractor)
-├── description
-└── permissions (JSONB)
-
-Email_Accounts
-├── id
-├── user_id (FK)
-├── provider (outlook, gmail)
-├── email_address
-├── display_name
-├── sync_enabled
-├── sync_folders (JSONB)
-├── last_sync_at
-└── is_active
-
-Integration_Providers
-├── id
-├── organization_id (FK)
-├── provider_type (outlook, gmail, teams, zendesk, microsoft_todo)
-├── display_name
-├── is_enabled
-├── settings (JSONB)
-└── credentials (encrypted)
-
-Briefing_Policies
-├── id
-├── organization_id (FK)
-├── name
-├── description
-├── schedule_type (daily, weekly, custom)
-├── schedule_time
-├── timezone
-├── days_of_week (JSONB array)
-├── priority_rules (JSONB)
-├── notification_channels (JSONB)
-├── ai_summarization_enabled
-├── is_default
-└── is_active
-
-Briefing_Items
-├── id
-├── user_id (FK)
-├── source_type (email, calendar, ticket, task)
-├── source_id
-├── title
-├── summary
-├── priority (1-5)
-├── is_read
-├── metadata (JSONB)
-└── created_at
-
-Contractor_Assignments
-├── id
-├── contractor_user_id (FK)
-├── sponsor_user_id (FK)
-├── assigned_by (FK)
-├── is_active
-└── created_at
-
-Quotes
-├── id
-├── organization_id (FK, nullable for global)
-├── text
-├── author
-├── category
-└── is_active
-
-Audit_Logs
-├── id
-├── organization_id (FK)
-├── user_id (FK)
-├── action
-├── resource_type
-├── resource_id
-├── details (JSONB)
-└── created_at
+Frontend: React 18, TypeScript, Tailwind CSS, Shadcn/ui
+Backend: Node.js, Express, TypeScript
+Database: PostgreSQL with Drizzle ORM
+Auth: Microsoft OAuth + password fallback
+Deploy: Replit Autoscale
 ```
 
-### 3.3 Integration Architecture
-
-Each integration uses Replit Connectors for OAuth token management:
+### 3.2 Core Data Model
 
 ```
-Per-User Integration Flow:
-1. User initiates connection in Settings
-2. OAuth flow via Replit Connector
-3. Tokens stored securely per-user
-4. Background sync jobs per account
-5. Data aggregated into Briefing_Items
+Users           - id, email, name, title, department, role_id, org_id
+Organizations   - id, name, domain, settings
+Roles           - id, name, permissions (admin/manager/user/contractor)
+Email_Accounts  - id, user_id, provider, email_address, sync_enabled
+Briefing_Items  - id, user_id, source_type, title, summary, priority
+Quotes          - id, text, author, category
 ```
 
-**Supported Integrations:**
+### 3.3 Core API Endpoints
 
-| Provider | API | Permissions Required |
-|----------|-----|---------------------|
-| Microsoft Outlook | Microsoft Graph | Mail.Read, Calendars.Read, User.Read |
-| Gmail | Google API | gmail.readonly |
-| Microsoft Teams | Microsoft Graph | Calendars.Read, OnlineMeetings.Read |
-| Zendesk | Zendesk API | tickets:read |
-| Microsoft To-Do | Microsoft Graph | Tasks.Read |
-
----
-
-## 4. API Endpoints
-
-### 4.1 Authentication
 ```
-POST   /api/auth/login          - Email/password login
-POST   /api/auth/logout         - End session
-GET    /api/auth/me             - Current user info
-```
+Auth:
+  POST /api/auth/login     - Login with email/password
+  GET  /api/auth/me        - Current user
 
-### 4.2 Briefing
-```
-GET    /api/briefing            - Get user's daily briefing
-GET    /api/briefing/quote      - Get random quote
-POST   /api/briefing/refresh    - Force sync and refresh
-```
+Briefing:
+  GET  /api/briefing       - Get morning briefing
+  GET  /api/briefing/quote - Random quote
 
-### 4.3 Admin Routes (require admin/manager role)
-```
-GET    /api/admin/access-check  - Verify admin access
-GET    /api/admin/stats         - Dashboard statistics
-GET    /api/admin/users         - List users (paginated, searchable)
-POST   /api/admin/users         - Create user
-PATCH  /api/admin/users/:id     - Update user
-DELETE /api/admin/users/:id     - Deactivate user
+Admin:
+  GET  /api/admin/users    - List users
+  POST /api/admin/users    - Create user
+  GET  /api/admin/quotes   - List quotes
+  POST /api/admin/quotes   - Add quote
 
-GET    /api/admin/organizations - List organizations
-PATCH  /api/admin/organizations/:id - Update organization
-
-GET    /api/admin/roles         - List roles
-GET    /api/admin/policies      - List briefing policies
-POST   /api/admin/policies      - Create policy
-PATCH  /api/admin/policies/:id  - Update policy
-DELETE /api/admin/policies/:id  - Delete policy
-
-GET    /api/admin/quotes        - List quotes
-POST   /api/admin/quotes        - Create quote
-DELETE /api/admin/quotes/:id    - Delete quote
-
-GET    /api/admin/integrations  - List integration providers
-POST   /api/admin/integrations  - Configure integration
-```
-
-### 4.4 User Routes
-```
-GET    /api/user/email-accounts    - User's linked email accounts
-POST   /api/user/email-accounts    - Link new email account
-DELETE /api/user/email-accounts/:id - Unlink email account
-GET    /api/user/preferences       - Get preferences
-PATCH  /api/user/preferences       - Update preferences
-```
-
-### 4.5 Health & Status
-```
-GET    /api/health              - Server health check (no auth)
-GET    /api/integration-status  - Integration connection status
+Health:
+  GET  /api/health         - Server status
 ```
 
 ---
 
-## 5. UI Pages
+## 4. Core Implementation Phases
 
-### 5.1 Public Pages
-- `/login` - Email/password login with Outlook OAuth option
+### Phase 1: Foundation (Week 1)
+- [ ] Login (OAuth + password fallback)
+- [ ] Dashboard layout
+- [ ] Outlook email display
+- [ ] Outlook calendar display
+- [ ] Production deployment working
 
-### 5.2 User Pages
-- `/` (Dashboard) - Main briefing view
-- `/settings` - User preferences and linked accounts
-
-### 5.3 Admin Pages
-- `/admin` - Admin panel with tabs:
-  - Overview (stats, quick actions)
-  - Users (management table)
-  - Integrations (connection configuration)
-  - Policies (briefing schedules)
-  - Quotes (inspirational quote management)
-  - Settings (organization configuration)
-
----
-
-## 6. Security Requirements
-
-1. **Authentication**
-   - Session-based with 7-day expiry
-   - Password fallback for initial admin setup
-   - OAuth via Microsoft for regular users
-
-2. **Authorization**
-   - Role-based access control on all routes
-   - Contractor isolation (only see assigned users)
-   - Admin impersonation with audit logging
-
-3. **Data Protection**
-   - OAuth tokens managed by Replit Connectors
-   - No plaintext passwords stored
-   - Audit trail for sensitive operations
-
-4. **Environment Variables**
-   - `DATABASE_URL` - PostgreSQL connection
-   - `SESSION_SECRET` - Session encryption
-   - `ADMIN_PASSWORD` - Bootstrap admin creation
-
----
-
-## 7. Deployment Requirements
-
-1. **Deployment Type:** Autoscale (not static)
-2. **Build Command:** `npm run build`
-3. **Run Command:** `npm start`
-4. **Database:** PostgreSQL with auto-migration on startup
-5. **Bootstrap:** Auto-create roles, organization, and seed data on first run
-
----
-
-## 8. Implementation Phases
-
-### Phase 1: Core Foundation
-- [ ] User authentication (OAuth + password fallback)
-- [ ] Dashboard with Outlook email/calendar
-- [ ] Admin user management
-- [ ] Role-based access control
-- [ ] Quote of the Day
-
-### Phase 2: Extended Integrations
+### Phase 2: Complete MVP (Week 2)
 - [ ] Gmail integration
-- [ ] Zendesk ticket integration
-- [ ] Microsoft To-Do integration
-- [ ] Per-user email account linking
-
-### Phase 3: Advanced Features
-- [ ] Microsoft Teams integration
-- [ ] AI email summarization
-- [ ] Scheduled briefing delivery (email)
-- [ ] Contractor assignments and viewing
-- [ ] Admin impersonation
-
-### Phase 4: Scale & Polish
-- [ ] Bulk user import
-- [ ] Advanced briefing policies
-- [ ] Custom priority rules
-- [ ] Mobile-responsive optimization
-- [ ] Performance optimization for 500+ users
+- [ ] Zendesk ticket counts
+- [ ] Microsoft To-Do tasks
+- [ ] Quote of the Day
+- [ ] Admin panel (users, quotes)
 
 ---
 
-## 9. Testing Checklist
+## 5. Deployment
 
-- [ ] Login works in development
+| Setting | Value |
+|---------|-------|
+| Type | Autoscale (NOT static) |
+| Build | `npm run build` |
+| Run | `npm start` |
+| Database | PostgreSQL (auto-bootstrap on startup) |
+
+---
+
+## 6. Security Essentials
+
+- Session-based auth (7-day expiry)
+- Role-based access control
+- OAuth tokens via Replit Connectors
+- Audit logging for admin actions
+
+---
+
+## 7. Testing Checklist (MVP)
+
 - [ ] Login works in production
-- [ ] `/api/health` returns database connected
-- [ ] Outlook emails display on dashboard
-- [ ] Calendar events display on dashboard
-- [ ] Admin panel accessible for admin users
-- [ ] Non-admin users blocked from admin panel
-- [ ] User creation works
-- [ ] Quote management works
-- [ ] All integrations show correct status
+- [ ] `/api/health` returns "connected"
+- [ ] Emails display on dashboard
+- [ ] Calendar shows today's events
+- [ ] Admin panel accessible to admins only
+- [ ] Quote of the Day displays
 
 ---
 
-## 10. Known Constraints
+## 8. Contact
 
-1. **Replit Platform**
-   - Must use Autoscale deployment (not static)
-   - Database managed via Replit PostgreSQL
-   - OAuth via Replit Connectors only
-
-2. **Current Limitations**
-   - Single Outlook connector shared across users (needs per-user refactor)
-   - No email delivery for briefings yet
-   - No AI summarization implemented yet
-
----
-
-## 11. Contact & Support
-
-**Primary Admin:** Mark Bojeun  
+**Admin:** Mark Bojeun  
 **Email:** mark.bojeun@sccc.edu  
-**Organization:** Seward County Community College  
 **Password:** Seward.Saints#!
 
 ---
 
-## 12. Additional Features for Higher Education (Enhanced)
+---
 
-Based on real-world executive needs in community college environments, the following additional features have been identified:
+# PART 2: OPTIONAL ENHANCEMENTS
 
-### 12.1 Higher Education-Specific Integrations
+*The following features enhance the core briefing but are not required for MVP.*
 
-| System | Purpose | Data Provided |
-|--------|---------|---------------|
-| **Ellucian Banner/Colleague** | Student Information System (SIS) | Enrollment numbers, registration status, student alerts |
-| **Workday** | ERP/HR/Finance | Budget variances, staffing exceptions, payroll alerts |
-| **Canvas/Blackboard** | Learning Management System (LMS) | Course completion rates, student engagement, faculty activity |
-| **Salesforce Education Cloud** | CRM/Recruitment | Prospect pipeline, application status, recruitment KPIs |
-| **Facilities Management** | Work Orders | Open work orders, emergency repairs, space utilization |
-| **Everbridge/RAVE** | Emergency Notification | Active alerts, drill schedules, incident status |
-| **Accreditation Tracking** | Compliance | Upcoming deadlines, document status, audit schedules |
+---
 
-### 12.2 Role-Based Briefing Templates
+## 9. Optional: Role-Based Briefing Templates
 
-Each executive role receives a customized briefing focused on their responsibilities:
+Customize briefing content by executive role:
 
 **President/Chancellor:**
-- Enrollment dashboard (today vs. last year)
+- Enrollment snapshot (today vs. last year)
 - Budget health summary
-- Accreditation/compliance alerts
-- VIP communications requiring response
+- VIP communications
 - Board-related items
-- Media mentions
 
 **CIO/IT Director:**
-- System uptime/outage status
+- System uptime status
 - Security incidents overnight
 - IT ticket escalations
-- Infrastructure capacity alerts
 - Vendor SLA compliance
-- Project milestone updates
 
 **Academic Dean:**
-- Faculty attendance/coverage
+- Faculty coverage issues
 - Course enrollment changes
-- Student retention risk alerts
-- Curriculum approval deadlines
-- Adjunct staffing gaps
+- Retention risk alerts
 
-**CFO/Business Office:**
+**CFO:**
 - Daily cash position
-- Budget variance alerts (>5%)
-- Grant deadline reminders
-- Accounts receivable aging
-- Purchasing approvals pending
+- Budget variance alerts
+- Grant deadlines
 
 **HR Director:**
-- Open positions status
+- Open positions
 - Time-off requests pending
-- Employee relations issues
 - Compliance training due
-- Benefits enrollment alerts
-
-### 12.3 AI/ML Enhanced Features
-
-1. **Smart Prioritization**
-   - Machine learning-based email importance scoring
-   - Sender reputation and historical response patterns
-   - Deadline extraction and urgency detection
-
-2. **Anomaly Detection**
-   - Enrollment drop alerts (>2% daily change)
-   - Budget variance warnings
-   - Unusual system access patterns
-   - Student success early warnings
-
-3. **Natural Language Queries**
-   - "What's my enrollment compared to last fall?"
-   - "Show me urgent items from the President"
-   - "Any budget issues this week?"
-
-4. **Meeting Intelligence**
-   - Pre-meeting briefs (participants, context, last meeting notes)
-   - Post-meeting action extraction
-   - Conflict detection and resolution suggestions
-
-5. **Predictive Insights**
-   - Enrollment forecasting
-   - Budget burn rate projections
-   - Staffing needs predictions
-
-### 12.4 Collaboration & Delegation
-
-1. **Executive Assistant Mode**
-   - Approved impersonation for EA viewing exec briefings
-   - Draft response preparation
-   - Calendar management on behalf of
-
-2. **Delegation Workflow**
-   - Route briefing items to team members
-   - Track delegated item completion
-   - Escalation if no response
-
-3. **Shared Notes**
-   - Annotate briefing items
-   - Share context with team
-   - Historical decision tracking
-
-4. **Team Briefing Roll-up**
-   - Managers see aggregate of team briefings
-   - Drill-down to individual items
-   - Team workload visibility
-
-### 12.5 Analytics & Reporting
-
-1. **Personal Analytics**
-   - Email response time trends
-   - Meeting load analysis
-   - Focus time availability
-
-2. **Institutional Dashboards**
-   - Enrollment trends (real-time)
-   - Retention waterfall
-   - Financial health scorecard
-   - IT service levels
-
-3. **Comparative Metrics**
-   - This week vs. last week
-   - This semester vs. last year
-   - Peer institution benchmarks (if available)
-
-4. **Export & Sharing**
-   - PDF briefing export
-   - Board report generation
-   - Scheduled report delivery
-
-### 12.6 Emergency & Alerting
-
-1. **Multi-Channel Alerts**
-   - In-app notifications
-   - Email digest
-   - SMS for critical items
-   - Microsoft Teams notifications
-
-2. **Escalation Paths**
-   - Configurable escalation rules
-   - Time-based auto-escalation
-   - On-call rotation support
-
-3. **Emergency Integration**
-   - Weather alerts (NWS feed)
-   - Campus emergency status
-   - System outage broadcasts
-   - Active shooter/lockdown protocols
-
-4. **Incident Dashboard**
-   - Active incidents list
-   - Resolution status
-   - Post-incident review tracking
-
-### 12.7 Compliance & Governance
-
-1. **FERPA Compliance**
-   - Student data access logging
-   - Role-based data visibility
-   - Data retention policies
-
-2. **Accessibility (WCAG 2.2 AA)**
-   - Screen reader compatible
-   - Keyboard navigation
-   - High contrast mode
-   - Adjustable text sizes
-
-3. **Audit Trail**
-   - All access logged
-   - Data export tracking
-   - Configuration change history
-
-4. **Data Retention**
-   - Configurable retention periods
-   - Automated purging
-   - Legal hold support
-
-### 12.8 Mobile & Offline
-
-1. **Progressive Web App (PWA)**
-   - Install on mobile home screen
-   - Push notifications
-   - Offline briefing cache
-
-2. **Mobile-Optimized Views**
-   - Touch-friendly interface
-   - Swipe actions
-   - Quick actions
-
-3. **Offline Snapshot**
-   - Download morning briefing
-   - View without connectivity
-   - Sync when reconnected
 
 ---
 
-## 13. Updated Implementation Roadmap
+## 10. Optional: Additional Integrations
 
-### Phase 1: Foundation (Weeks 1-2)
-- [ ] Authentication (OAuth + password)
-- [ ] Core dashboard with Outlook
-- [ ] Admin panel basics
-- [ ] Role-based access
-- [ ] Production deployment working
+### 10.1 Communication Platforms
+| System | Purpose |
+|--------|---------|
+| Microsoft Teams | Meeting integration, notifications |
+| Slack | Alternative notification channel |
 
-### Phase 2: Core Integrations (Weeks 3-4)
-- [ ] Gmail integration
-- [ ] Zendesk integration
-- [ ] Microsoft To-Do
-- [ ] Per-user account linking
-- [ ] Quote of the Day
+### 10.2 Higher Education Systems
+| System | Purpose |
+|--------|---------|
+| Ellucian Banner/Colleague | SIS - enrollment data |
+| Workday | ERP - budget, HR data |
+| Canvas/Blackboard | LMS - course data |
+| Salesforce Education Cloud | CRM - recruitment |
 
-### Phase 3: Higher Ed Data (Weeks 5-6)
-- [ ] SIS integration (Banner/Colleague API)
-- [ ] Enrollment dashboard widget
-- [ ] Budget summary widget
-- [ ] Role-based briefing templates
-
-### Phase 4: AI Enhancement (Weeks 7-8)
-- [ ] Email summarization
-- [ ] Priority scoring
-- [ ] Natural language queries
-- [ ] Anomaly detection alerts
-
-### Phase 5: Collaboration (Weeks 9-10)
-- [ ] Executive assistant mode
-- [ ] Item delegation
-- [ ] Team roll-up views
-- [ ] Shared notes
-
-### Phase 6: Mobile & Polish (Weeks 11-12)
-- [ ] PWA implementation
-- [ ] Offline support
-- [ ] Analytics dashboards
-- [ ] Performance optimization
-
-### Phase 7: Emergency & Compliance (Weeks 13-14)
-- [ ] Emergency notification integration
-- [ ] Multi-channel alerting
-- [ ] FERPA compliance audit
-- [ ] Accessibility audit
+### 10.3 Operations
+| System | Purpose |
+|--------|---------|
+| Facilities Management | Work orders, space utilization |
+| Everbridge/RAVE | Emergency notifications |
+| PagerDuty/Statuspage | IT incident management |
 
 ---
 
-## 14. Competitive Differentiation
+## 11. Optional: AI/ML Features
 
-| Feature | This System | Microsoft Viva | Slack | Generic Briefing Tools |
-|---------|-------------|----------------|-------|------------------------|
-| Higher Ed Focus | Native | Generic | Generic | Generic |
-| SIS/ERP Integration | Yes | Manual | No | Rare |
-| Role-Based Templates | Yes | Limited | No | Limited |
-| FERPA Compliance | Built-in | Add-on | No | Varies |
-| Enrollment Dashboards | Yes | No | No | No |
-| Multi-Source Email | Yes | Outlook only | No | Limited |
-| Executive Assistant Mode | Yes | Limited | No | Rare |
-| Emergency Alerts | Integrated | Separate | Separate | No |
+1. **Smart Prioritization** - ML-based email importance scoring
+2. **Email Summarization** - AI-generated email summaries
+3. **Anomaly Detection** - Alert on unusual patterns (enrollment drop, budget spike)
+4. **Natural Language Queries** - "Show me urgent items from the President"
+5. **Meeting Intelligence** - Pre-meeting briefs with context
+6. **Predictive Insights** - Enrollment forecasting, budget projections
 
 ---
 
-*This document serves as the complete specification for rebuilding the Executive Morning Briefing AI from scratch.*
+## 12. Optional: Collaboration Features
+
+1. **Executive Assistant Mode** - EA views exec briefings with approval
+2. **Delegation Workflow** - Route items to team members
+3. **Shared Notes** - Annotate briefing items
+4. **Team Roll-up** - Managers see aggregate team view
+
+---
+
+## 13. Optional: Analytics & Reporting
+
+1. **Personal Analytics** - Response time trends, meeting load
+2. **Institutional Dashboards** - Enrollment trends, financial health
+3. **Comparative Metrics** - This week vs last, YoY comparisons
+4. **PDF Export** - Download briefing as PDF
+5. **Scheduled Reports** - Email weekly summaries
+
+---
+
+## 14. Optional: Emergency & Alerting
+
+1. **Multi-Channel Alerts** - Email, SMS, Teams, in-app
+2. **Escalation Paths** - Auto-escalate unread urgent items
+3. **Emergency Integration** - Weather alerts, campus emergencies
+4. **Incident Dashboard** - Active incident tracking
+
+---
+
+## 15. Optional: Compliance & Governance
+
+1. **FERPA Compliance** - Student data access controls
+2. **Accessibility (WCAG 2.2 AA)** - Screen reader, keyboard nav
+3. **Comprehensive Audit Trail** - All access logged
+4. **Data Retention Policies** - Configurable purge rules
+
+---
+
+## 16. Optional: Mobile & Offline
+
+1. **Progressive Web App (PWA)** - Install on home screen
+2. **Push Notifications** - Mobile alerts
+3. **Offline Snapshot** - View briefing without connectivity
+4. **Touch-Optimized UI** - Swipe actions
+
+---
+
+## 17. Future Implementation Roadmap
+
+| Phase | Weeks | Focus |
+|-------|-------|-------|
+| Phase 3 | 3-4 | Role-based templates, Teams integration |
+| Phase 4 | 5-6 | AI summarization, priority scoring |
+| Phase 5 | 7-8 | SIS/ERP integration, enrollment dashboards |
+| Phase 6 | 9-10 | Collaboration features, delegation |
+| Phase 7 | 11-12 | Mobile PWA, offline support |
+| Phase 8 | 13-14 | Emergency alerts, compliance audit |
+
+---
+
+## 18. Competitive Differentiation
+
+| Feature | This System | Microsoft Viva | Slack |
+|---------|-------------|----------------|-------|
+| Higher Ed Focus | Native | Generic | Generic |
+| SIS Integration | Yes | Manual | No |
+| Role Templates | Yes | Limited | No |
+| FERPA Built-in | Yes | Add-on | No |
+| Multi-Email | Yes | Outlook only | No |
+| Quote of Day | Yes | No | No |
+
+---
+
+*End of Design Document*
