@@ -72,6 +72,27 @@ export async function registerRoutes(
 ): Promise<Server> {
   
   // ==========================================
+  // HEALTH CHECK (no auth required)
+  // ==========================================
+  app.get("/api/health", async (_req, res) => {
+    try {
+      const roles = await storage.getRoles();
+      res.json({ 
+        status: "ok", 
+        database: roles.length > 0 ? "connected" : "empty",
+        rolesCount: roles.length,
+        timestamp: new Date().toISOString()
+      });
+    } catch (error: any) {
+      res.status(500).json({ 
+        status: "error", 
+        database: "disconnected",
+        error: error.message 
+      });
+    }
+  });
+
+  // ==========================================
   // AUTH ROUTES
   // ==========================================
   
