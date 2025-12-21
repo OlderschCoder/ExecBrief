@@ -84,23 +84,53 @@ export async function registerRoutes(
         return res.status(400).json({ error: 'Email and password required' });
       }
       
-      const user = await storage.getUserByEmail(email.toLowerCase());
+      let user = await storage.getUserByEmail(email.toLowerCase());
       
-      if (!user) {
-        return res.status(401).json({ error: 'Invalid email or password' });
-      }
-      
-      // Check password - requires ADMIN_PASSWORD env var to be set for login
+      // Check password first
       const adminPassword = process.env.ADMIN_PASSWORD;
-      const isValidPassword = (adminPassword && password === adminPassword) || 
-        (user.passwordHash && password === user.passwordHash);
+      const isValidPassword = adminPassword && password === adminPassword;
       
-      if (!adminPassword && !user.passwordHash) {
-        return res.status(401).json({ error: 'Password login not configured. Please set ADMIN_PASSWORD or connect Outlook.' });
+      if (!adminPassword) {
+        return res.status(401).json({ error: 'Password login not configured. Please set ADMIN_PASSWORD.' });
       }
       
       if (!isValidPassword) {
         return res.status(401).json({ error: 'Invalid email or password' });
+      }
+      
+      // Auto-create admin user if they don't exist (bootstrap for fresh database)
+      if (!user) {
+        const domain = email.split('@')[1] || 'sccc.edu';
+        
+        // Get or create organization
+        let org = await storage.getOrganizationByDomain(domain);
+        if (!org) {
+          org = await storage.createOrganization({
+            name: 'Seward County Community College',
+            domain: domain,
+            isActive: true,
+          });
+        }
+        
+        // Get admin role (should exist from seed, but handle if not)
+        const roles = await storage.getRoles();
+        const adminRole = roles.find(r => r.name === 'admin');
+        
+        // Format name from email
+        const nameParts = email.split('@')[0].split('.');
+        const formattedName = nameParts.map((n: string) => n.charAt(0).toUpperCase() + n.slice(1)).join(' ');
+        
+        // Create the admin user
+        user = await storage.createUser({
+          email: email.toLowerCase(),
+          name: formattedName,
+          title: 'Administrator',
+          organizationId: org.id,
+          roleId: adminRole?.id,
+          isActive: true,
+        });
+        
+        console.log('Created bootstrap admin user:', user.email);
       }
       
       // Get role name
