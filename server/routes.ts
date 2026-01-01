@@ -1,9 +1,10 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { getRecentEmails, getTodayEvents, getUserProfile } from "./integrations/outlook";
+import { getRecentEmails, getTodayEvents, getUserProfile, getEmailBody } from "./integrations/outlook";
 import { getRecentGmailEmails, isGmailConnected } from "./integrations/gmail";
 import { isZendeskConnected, getOpenTickets, getUrgentTickets } from "./integrations/zendesk";
+import { analyzeEmails, isOpenAIConfigured, type EmailContent } from "./integrations/openai";
 import { 
   insertUserSchema, 
   insertOrganizationSchema, 
@@ -367,20 +368,73 @@ export async function registerRoutes(
         getTodayEvents()
       ]);
 
-      // Transform Outlook emails into briefing items
-      const outlookBriefings = outlookEmails.map(email => ({
-        type: 'email' as const,
-        priority: email.importance === 'high' ? 'high' as const : 'medium' as const,
-        source: 'outlook' as const,
-        title: email.subject,
-        summary: email.bodyPreview,
-        sender: email.from.emailAddress.name,
-        timestamp: new Date(email.receivedDateTime),
-        metadata: JSON.stringify({
-          id: email.id,
-          from: email.from.emailAddress.address
-        })
-      }));
+      // Prepare emails for AI analysis (if OpenAI is configured)
+      const useAI = isOpenAIConfigured();
+      let emailAnalyses: any[] = [];
+
+      if (useAI) {
+        try {
+          // Prepare email content for analysis (limit to top 10 for performance/cost)
+          const emailsForAnalysis: EmailContent[] = [];
+          
+          // Add Outlook emails (limit to 10 for cost/performance)
+          const emailsToAnalyze = outlookEmails.slice(0, 10);
+          for (const email of emailsToAnalyze) {
+            try {
+              const body = await getEmailBody(email.id);
+              emailsForAnalysis.push({
+                subject: email.subject,
+                body: body || email.bodyPreview,
+                from: email.from.emailAddress.address,
+                receivedDate: email.receivedDateTime,
+                importance: email.importance
+              });
+            } catch (error) {
+              // If we can't get full body, use preview
+              emailsForAnalysis.push({
+                subject: email.subject,
+                body: email.bodyPreview,
+                from: email.from.emailAddress.address,
+                receivedDate: email.receivedDateTime,
+                importance: email.importance
+              });
+            }
+          }
+
+          // Analyze emails with AI
+          if (emailsForAnalysis.length > 0) {
+            emailAnalyses = await analyzeEmails(emailsForAnalysis);
+          }
+        } catch (aiError: any) {
+          console.error('AI analysis failed, continuing without it:', aiError.message);
+          // Continue without AI analysis if it fails
+        }
+      }
+
+      // Transform Outlook emails into briefing items with AI analysis
+      const outlookBriefings = outlookEmails.map((email, index) => {
+        // Only use AI analysis for the first 10 emails (those that were analyzed)
+        const analysis = index < emailAnalyses.length ? emailAnalyses[index] : null;
+        
+        return {
+          type: 'email' as const,
+          priority: analysis?.priority || (email.importance === 'high' ? 'high' as const : 'medium' as const),
+          source: 'outlook' as const,
+          title: email.subject,
+          summary: analysis?.summary || email.bodyPreview,
+          sender: email.from.emailAddress.name,
+          senderEmail: email.from.emailAddress.address,
+          timestamp: new Date(email.receivedDateTime),
+          needsResponse: analysis?.needsResponse || false,
+          actionItems: analysis?.actionItems || [],
+          category: analysis?.category || 'general',
+          aiAnalyzed: !!analysis,
+          metadata: JSON.stringify({
+            id: email.id,
+            from: email.from.emailAddress.address
+          })
+        };
+      });
 
       // Transform Gmail emails into briefing items
       const gmailBriefings = gmailEmails.map((email: any) => ({
@@ -390,16 +444,29 @@ export async function registerRoutes(
         title: email.subject || '(No subject)',
         summary: email.snippet || '',
         sender: email.from?.split('<')[0]?.trim() || email.from,
+        senderEmail: email.from,
         timestamp: new Date(email.date),
+        needsResponse: false, // Gmail analysis can be added later
+        actionItems: [],
+        category: 'general',
+        aiAnalyzed: false,
         metadata: JSON.stringify({
           id: email.id,
           from: email.from
         })
       }));
 
-      // Combine all emails and sort by timestamp
+      // Combine all emails and sort by priority (high first), then timestamp
       const emailBriefings = [...outlookBriefings, ...gmailBriefings]
-        .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+        .sort((a, b) => {
+          // Sort by priority first (high > medium > low)
+          const priorityOrder = { high: 3, medium: 2, low: 1 };
+          const priorityDiff = (priorityOrder[b.priority as keyof typeof priorityOrder] || 2) - 
+                               (priorityOrder[a.priority as keyof typeof priorityOrder] || 2);
+          if (priorityDiff !== 0) return priorityDiff;
+          // Then by timestamp (newest first)
+          return b.timestamp.getTime() - a.timestamp.getTime();
+        });
 
       // Transform events into briefing items
       const eventBriefings = events.map(event => ({
@@ -522,6 +589,7 @@ export async function registerRoutes(
     let gmailConnected = false;
     let teamsConnected = false;
     let zendeskConnected = false;
+    let openaiConfigured = false;
 
     // Test Outlook connection - silently handle auth failures
     try {
@@ -545,6 +613,9 @@ export async function registerRoutes(
       // Quietly treat any error as "not connected"
     }
 
+    // Check OpenAI configuration
+    openaiConfigured = isOpenAIConfigured();
+
     // Teams would require separate connector - currently not available
     teamsConnected = false;
 
@@ -552,7 +623,8 @@ export async function registerRoutes(
       outlook: outlookConnected,
       gmail: gmailConnected,
       teams: teamsConnected,
-      zendesk: zendeskConnected
+      zendesk: zendeskConnected,
+      openai: openaiConfigured
     });
   });
 

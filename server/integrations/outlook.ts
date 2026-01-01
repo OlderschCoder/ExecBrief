@@ -121,3 +121,17 @@ export async function getUserProfile() {
   const client = await getUncachableOutlookClient();
   return await client.api('/me').get();
 }
+
+/**
+ * Get full email body by message ID
+ */
+export async function getEmailBody(messageId: string): Promise<string> {
+  const client = await getUncachableOutlookClient();
+  const message = await client.api(`/me/messages/${messageId}`).select('body').get();
+  // Extract text from HTML or use plain text
+  if (message.body?.contentType === 'html') {
+    // Simple HTML to text conversion - strip HTML tags
+    return message.body.content.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+  }
+  return message.body?.content || '';
+}

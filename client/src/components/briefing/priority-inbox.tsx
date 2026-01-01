@@ -11,8 +11,13 @@ interface BriefingEmail {
   title: string;
   summary: string;
   sender: string;
+  senderEmail?: string;
   timestamp: string;
   metadata: string;
+  needsResponse?: boolean;
+  actionItems?: string[];
+  category?: string;
+  aiAnalyzed?: boolean;
 }
 
 export function PriorityInbox() {
@@ -70,7 +75,7 @@ export function PriorityInbox() {
                         <span className="font-semibold text-sm">{email.sender}</span>
                         <span className="text-xs text-muted-foreground">• {timeAgo}</span>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 flex-wrap">
                         <Badge variant="outline" className="text-[10px] h-5 px-1.5 text-muted-foreground">
                           {email.source}
                         </Badge>
@@ -79,19 +84,50 @@ export function PriorityInbox() {
                             High Priority
                           </Badge>
                         )}
+                        {email.needsResponse && (
+                          <Badge variant="outline" className="text-[10px] h-5 px-1.5 text-amber-600 border-amber-600">
+                            Needs Response
+                          </Badge>
+                        )}
+                        {email.aiAnalyzed && (
+                          <Badge variant="outline" className="text-[10px] h-5 px-1.5 text-blue-600 border-blue-600">
+                            AI Analyzed
+                          </Badge>
+                        )}
                       </div>
                     </div>
                     <h4 className="font-medium text-sm text-foreground mb-1 group-hover:text-primary transition-colors">
                       {email.title}
                     </h4>
                     <p className="text-sm text-muted-foreground leading-snug line-clamp-2">
-                      <span className="text-primary/60 font-medium text-xs uppercase tracking-wide mr-1">AI Summary:</span>
-                      {email.summary}
+                      {email.aiAnalyzed ? (
+                        <>
+                          <span className="text-primary/60 font-medium text-xs uppercase tracking-wide mr-1">AI Summary:</span>
+                          {email.summary}
+                        </>
+                      ) : (
+                        email.summary
+                      )}
                     </p>
+                    {email.actionItems && email.actionItems.length > 0 && (
+                      <div className="mt-2 p-2 bg-muted/50 rounded text-xs">
+                        <span className="font-medium text-foreground">Action Items:</span>
+                        <ul className="list-disc list-inside mt-1 space-y-0.5">
+                          {email.actionItems.slice(0, 3).map((item, idx) => (
+                            <li key={idx} className="text-muted-foreground">{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                     <div className="mt-2 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button className="text-xs font-medium text-primary flex items-center gap-1 hover:underline">
                         Read full email <ExternalLink className="w-3 h-3" />
                       </button>
+                      {email.needsResponse && (
+                        <button className="text-xs font-medium text-amber-600 hover:text-amber-700">
+                          Reply required
+                        </button>
+                      )}
                       <button className="text-xs font-medium text-muted-foreground hover:text-foreground">
                         Draft reply
                       </button>
